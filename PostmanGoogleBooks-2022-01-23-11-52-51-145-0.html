@@ -1,0 +1,2706 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow-y: scroll;">
+<head>
+  <meta charset="UTF-8">
+  <title>Newman Summary Report</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/styles/default.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+
+<style>
+code.renderMarkdown table, code.renderMarkdown th, code.renderMarkdown td {
+    border: 1px solid black;
+    width: max-content;
+    padding: .75rem;
+}
+
+.theme-dark {
+    --background-color: #222;
+    --bg-card-deck: #444444;
+    --text-color: #ccd2d8;
+    --tab-border: solid 1px #444;
+    --success: #3c9372;
+    --failure: #c24a3f;
+    --warning: #d28c23;
+    --info: #4083b6;
+    --badge-outline: #3c9372;
+    --badge-bg: #cdd3db;
+    --badge-text: #ccd2d9;
+    --failure-row: #c24a3f;
+    --warning-row: #d28c23;
+    --card-bg: #444;
+    --card-footer: #4f5758;
+    --form-input: #ececb5;
+    --hov-text: #d2dae5;
+    --h4-text: #ccd1d9;
+}
+
+.theme-light {
+    --tab-border: solid 1px #fff;
+    --text-color: #000000;
+    --success: #42a745;
+    --failure: #dc3544;
+    --warning: #f4c10b;
+    --info: #49a1b8;
+    --badge-outline: #040411;
+    --badge-bg: #f8f9fa;
+    --badge-text: #fff;
+    --failure-row: #f5c6cb;
+    --warning-row: #ffeeba;
+    --card-bg: #f7f7f7;
+    --hov-text: #fff;
+    --h4-text: #ffffff;
+}
+
+body {
+  padding-top:30px;
+  background-color: var(--background-color)!important;
+  color: var(--text-color);
+}
+
+#execution-data {
+  padding: 10px;
+  border: var(--tab-border);
+  border-top: none;
+}
+
+.nav-tabs {
+  padding-top: 10px;
+  height: 105px;
+  overflow-y: auto;
+}
+
+body.theme-dark .card-header {
+    background-color: #444;
+}
+
+body.theme-light .card-header {
+    background-color: #f7f7f7;
+}
+
+.card-footer {
+    padding: .75rem 1.25rem;
+    background-color: var(--card-footer);
+}
+
+.card-deck {
+    background-color: var(--bg-card-deck)!important;
+}
+.form-control {
+    background: var(--form-input);
+}
+
+.custom-tab {
+  padding: 10px 15px;
+  margin-right: 0px;
+  height: 47px;
+  width: 69px;
+  text-align: center;
+  border: var(--tab-border);
+  border-bottom: none;
+  cursor:pointer;
+}
+
+body.theme-dark .text-white {
+    color: #ccd2d9!important;
+}
+h4 {
+    color: var(--h4-text);
+}
+
+body.theme-dark h1 {
+    color: #ccd2da;
+}
+
+body.theme-dark .bg-light>td {
+    background: #4f5858!important;
+}
+
+body.theme-dark .hljs {
+    background: #0a0a0ab0!important;
+    color: #8d8787!important;
+}
+
+.bg-info {
+    background-color: var(--info)!important;
+}
+.bg-success {
+    background-color: var(--success)!important;
+}
+
+.alert-success {
+    background-color: var(--success)!important;
+}
+
+.alert-warning {
+    background-color: var(--warning)!important;
+}
+
+.alert-info {
+    background-color: var(--info)!important;
+}
+
+.bg-warning {
+    background-color: var(--warning)!important;
+}
+
+.badge-warning {
+    color: var(--badge-text)!important;
+    background-color: var(--warning)!important;
+}
+
+.table-warning>td {
+    background-color: var(--warning-row);
+}
+
+.alert-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-dark .alert-dark {
+    background-color: #636467!important;
+}
+
+body.theme-dark .text-dark {
+    color: #d1dae4!important;
+}
+
+body.theme-dark .badge-light {
+    color: #212529;
+    background-color: #cdd3db;
+}
+
+body.theme-light .badge-light {
+    color: #212529;
+    background-color: #f8f9fa;
+}
+body.theme-light .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-dark .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+.table-danger>td {
+    background-color: var(--failure-row);
+}
+
+body.theme-dark .table .thead-light th {
+    background-color: #4f5858!important;
+    border-color: #dee2e6!important;
+    color: #ccd2d8!important;
+}
+
+.itPassed {
+  background: var(--success);
+  color: white;
+}
+.itFailed {
+  background: var(--failure);
+  color: white;
+}
+
+.resultsInfoPass {
+  color: var(--success);
+  padding-top: 4px;
+}
+
+.resultsInfoFail {
+  color: var(--failure);
+  padding-top: 4px;
+}
+
+.badge-outline-success {
+  color: var(--success);
+  border: 1px solid var(--success);
+  background-color: transparent;
+}
+
+.badge-outline {
+  color: var(--badge-outline);
+  border: 1px solid var(--badge-outline);
+  background-color: transparent;
+}
+
+.btn-outline-success {
+    color: var(--success)!important;
+    border-color: var(--success)!important;
+}
+
+.backToTop:hover {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: var(--hov-text)!important;
+}
+
+.btn-outline-success:hover {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: var(--hov-text)!important;
+}
+
+.btn-outline-secondary {
+  background-color: var(--success)!important;
+  color: var(--hov-text)!important;
+}
+
+body.theme-dark .env-heading {
+    color: #ccd2d9!important;
+}
+
+body, html {
+  height:100%;
+}
+
+.card {
+  overflow:hidden;
+}
+
+body.theme-dark .card-body {
+    background-color: #444;
+}
+
+body.theme-light .card-body {
+    background-color: #f7f7f7;
+}
+
+body.theme-dark .card-body .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-light .card-body .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+.card-body .rotate {
+  z-index: 8;
+  float: right;
+  height: 100%;
+}
+
+.card-body .rotate i {
+  color: #14141426;
+  position: absolute;
+  left: 0;
+  left: auto;
+  right: -10px;
+  bottom: 0;
+  display: block;
+  -webkit-transform: rotate(-44deg);
+  -moz-transform: rotate(-44deg);
+  -o-transform: rotate(-44deg);
+  -ms-transform: rotate(-44deg);
+  transform: rotate(-44deg);
+}
+
+.dyn-height {
+  max-height:350px;
+  overflow-y:auto;
+}
+
+.nav-pills .nav-link.active {
+  background-color: transparent!important;
+}
+
+.backToTop {
+  display: none;
+  position: fixed;
+  bottom: 10px;
+  right: 20px;
+  z-index: 99;
+  font-size: 15px;
+  outline: none;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+.card-header .fa {
+  transition: .3s transform ease-in-out;
+}
+.card-header .collapsed .fa {
+  transform: rotate(90deg);
+}
+
+.single-line-tabs {
+  padding-top: 10px;
+  height: 60px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 20px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 4px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  box-shadow: 0 0px 15px #2020203d;
+  background: white;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+input:checked + .slider {
+  background-color: #4083b6;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #4083b6;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(24px);
+  -ms-transform: translateX(24px);
+  transform: translateX(24px);
+  background: white;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+table.dataTable td, table.dataTable tr {
+    vertical-align: middle;
+} 
+
+body.theme-dark code {
+    color: #ccd2d8!important;
+} 
+
+body.theme-light code {
+    color: #000000!important;
+} 
+
+</style>
+</head>
+<body class="">
+  <div class="container">
+        <div class="container">
+            <label>Light</label>
+            <label id="switch" class="switch">
+                <input type="checkbox" onchange="toggleTheme()" id="slider">
+                <span class="slider round"></span>
+            </label>
+            <label>Dark</label>
+        </div>
+        <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
+            <li class="nav-item bg-info active" data-toggle="tooltip" title="Click to view the Summary">
+                <a class="nav-link text-white" id="pills-summary-tab" data-toggle="pill" href="#pills-summary" role="tab" aria-controls="pills-summary" aria-selected="true">Summary</a>
+            </li>
+            <li class="nav-item bg-success" data-toggle="tooltip" title="Click to view the Requests">
+                <a class="nav-link text-white" id="pills-requests-tab" data-toggle="pill" href="#pills-requests" role="tab" aria-controls="pills-requests" aria-selected="false">Total Requests <span class="badge badge-light">2</span></a>
+            </li>
+            <li class="nav-item bg-danger" data-toggle="tooltip" title="Click to view the Failed Tests">
+                <a class="nav-link text-white" id="pills-failed-tab" data-toggle="pill" href="#pills-failed" role="tab" aria-controls="pills-failed" aria-selected="false">Failed Tests <span class="badge badge-light">2</span></a>
+            </li>
+            <li class="nav-item bg-warning" data-toggle="tooltip" title="Click to view the Skipped Tests">
+                <a class="nav-link text-white" id="pills-skipped-tab" data-toggle="pill" href="#pills-skipped" role="tab" aria-controls="pills-skipped" aria-selected="false">Skipped Tests <span class="badge badge-light">0</span></a>
+            </li>
+            </ul>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-summary" role="tabcard" aria-labelledby="pills-summary-tab">
+<div class="row">
+  <div class="col-md-9 col-lg-12 main">
+   <h1 class="display-2 text-center">rapport-googleBooks_1</h1>
+   <h5 class="text-center">Sunday, 23 January 2022 12:52:51</h5>
+   <div class="row">
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-success">
+      <div class="card-body bg-danger">
+       <div class="rotate">
+        <i class="fa fa-retweet fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Iterations</h6>
+       <h1 class="display-1">1</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-danger">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-list fa-4x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Assertions</h6>
+       <h1 class="display-1">12</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-info">
+      <div class="card-body bg-danger">
+       <div class="rotate">
+        <i class="fa fa-plus-circle fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Failed Tests</h6>
+       <h1 class="display-1">2</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-warning">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-share fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Skipped Tests</h6>
+       <h1 class="display-1">0</h1>
+      </div>
+     </div>
+    </div>
+   </div>
+   <hr>
+    <div class="row">
+    <div class="col">
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                <h5 class="card-title text-uppercase text-white text-center bg-info">File Information</h5>
+                <span><i class="fas fa-file-code"></i></span><strong> Collection:</strong> PostmanGoogleBooks<br>
+                
+                <span><i class="fas fa-file-code"></i></span><strong> Environment:</strong> google-books-PROD<br>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                <h5 class="card-title text-uppercase text-white text-center bg-info">Timings and Data</h5>
+                <span><i class="fas fa-stopwatch"></i></span><strong> Total run duration:</strong> 1211ms<br>
+                <span><i class="fas fa-database"></i></span><strong> Total data received:</strong> 42.65KB<br>
+                <span><i class="fas fa-stopwatch"></i></span><strong> Average response time:</strong> 483ms<br>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-inverse">
+                    <tr class="text-center">
+                        <th class="text-uppercase">Summary Item</th>
+                        <th class="text-uppercase">Total</th>
+                        <th class="text-uppercase">Failed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Requests</td>
+                        <td class="text-center">2</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr>
+                        <td>Prerequest Scripts</td>
+                        <td class="text-center">0</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr>
+                        <td>Test Scripts</td>
+                        <td class="text-center">2</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr class="table-danger">
+                        <td>Assertions</td>
+                        <td class="text-center">12</td>
+                        <td class="text-center">2</td>
+                    </tr>
+                    <tr class="">
+                        <td>Skipped Tests</td>
+                        <td class="text-center">0</td>
+                        <td class="text-center">-</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+    <hr>
+   </div>
+   </div>
+  </div>
+ </div>
+        </div>
+            <div class="tab-pane fade" id="pills-failed" role="tabcard" aria-labelledby="pills-failed-tab">
+                <button id="topOfFailuresScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+                
+                    <div class="btn-group float-right" role="group" aria-label="Button Group">
+                        <button id="openAllFailed" class="btn btn-outline-success btn-sm float-right" style="text-align: center; width: 185px;">Expand All Failed Tests</button>
+                    </div>
+                    <br>
+                    <br>
+
+                    <div class="alert alert-danger text-uppercase text-center">
+                        <h4>Showing 2 Failures</h4>
+                    </div>
+                    <div class="col-sm-12 mb-3">
+                    <div class="card-deck">
+                        <div class="card border-danger">
+                            <div class="card-header bg-danger">
+                                <a data-toggle="collapse" href="#" data-target="#fails-collapse-447d795e-b6bf-4168-8b47-f427c2bdbdd2" aria-expanded="false" aria-controls="collapse" id="fails-447d795e-b6bf-4168-8b47-f427c2bdbdd2" class="collapsed text-white z-block">
+                                    Iteration 1 - AssertionError - books - ListBooks <i class="float-lg-right fa fa-chevron-down" style="padding-top:5px;"></i>
+                                </a>
+                            </div>
+                            <div id="fails-collapse-447d795e-b6bf-4168-8b47-f427c2bdbdd2" class="collapse" aria-labelledby="fails-447d795e-b6bf-4168-8b47-f427c2bdbdd2">
+                            <div class="card-body">
+                                <h5 ><strong>Failed Test:</strong> erreur provoquée si plus de 10 results</h5>
+                            <hr>
+                            <h5 class="card-title text-uppercase text-white text-center bg-danger">Assertion Error Message</h5>
+                            <div>
+                                <pre><code >expected 10 to be above 10</code></pre>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-sm-12 mb-3">
+                    <div class="card-deck">
+                        <div class="card border-danger">
+                            <div class="card-header bg-danger">
+                                <a data-toggle="collapse" href="#" data-target="#fails-collapse-6f7e4dee-674b-4d42-98bf-89fdde597029" aria-expanded="false" aria-controls="collapse" id="fails-6f7e4dee-674b-4d42-98bf-89fdde597029" class="collapsed text-white z-block">
+                                    Iteration 1 - TypeError - books - GetBook <i class="float-lg-right fa fa-chevron-down" style="padding-top:5px;"></i>
+                                </a>
+                            </div>
+                            <div id="fails-collapse-6f7e4dee-674b-4d42-98bf-89fdde597029" class="collapse" aria-labelledby="fails-6f7e4dee-674b-4d42-98bf-89fdde597029">
+                            <div class="card-body">
+                                <h5 ><strong>Failed Test:</strong> erreur provoquée si &gt;1 result</h5>
+                            <hr>
+                            <h5 class="card-title text-uppercase text-white text-center bg-danger">Assertion Error Message</h5>
+                            <div>
+                                <pre><code >Cannot read properties of undefined (reading &#x27;length&#x27;)</code></pre>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+
+            <div class="tab-pane fade" id="pills-skipped" role="tabcard" aria-labelledby="pills-skipped-tab">
+                <button id="topOfSkippedScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+
+                <div class="alert alert-success text-uppercase text-center">
+                    <br><br><h1 class="text-center">There are no skipped tests <span><i class="far fa-thumbs-up"></i></span></h1><br><br>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-requests" role="tabcard" aria-labelledby="pills-requests-tab">
+
+            <button id="topOfRequestsScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+            
+            <div class="btn-group float-right" role="group" aria-label="Button Group">
+                <button id="showOnlyFailures" class="btn btn-outline-success btn-sm float-right" style="text-align: center; width:160px;">Show Failed Iterations</button>
+                <button id="openAll" class="btn btn-outline-success btn-sm float-right" style="text-align: center; width: 140px;">Expand Folders</button>
+                <button id="openAllRequests" class="btn btn-outline-success btn-sm float-right" style="text-align: center; width: 140px;">Expand Requests</button>
+            </div>
+
+    <div class="text-uppercase" id="execution-menu">
+        <h5>1 Iteration available to view</h5>
+        
+        <nav class="table-responsive">
+        <ul class="nav single-line-tabs" id="iterationList">
+        </ul>
+        </nav>
+    </div>
+    <h6 class="text-uppercase text-muted" id="iterationSelected" style="padding-top: 10px;"></h6>
+	<div class="tab-content" id="execution-data">
+        <div class="alert alert-dark text-uppercase text-center iteration-0">
+        <a data-toggle="collapse" href="#" data-target="#folder-collapse-b27e7c51-e4c8-40fc-afad-dfca01868a3c-iteration-0" aria-expanded="false" aria-controls="collapse" id="folder-b27e7c51-e4c8-40fc-afad-dfca01868a3c-iteration-0" class="collapsed text-dark z-block">
+        <i class="fas fa-info-circle float-left resultsInfoPass"  style="color: #c24a3f; padding-top: 4px;" style="color: #c24a3f; padding-top: 4px;"></i>
+            books - 2 Requests in the folder<i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+        </a>
+        </div>
+        <div id="folder-collapse-b27e7c51-e4c8-40fc-afad-dfca01868a3c-iteration-0" class="collapse" aria-labelledby="folder-b27e7c51-e4c8-40fc-afad-dfca01868a3c">
+            <div id="folder-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-danger iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3" aria-expanded="false" aria-controls="collapse" id="requests-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3" class="collapsed text-white z-block">
+                    Iteration: 1 - ListBooks <i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3" class="collapse" aria-labelledby="requests-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Description</h5>
+                                        <div class="dyn-height">
+                                            <code class="renderMarkdown">1/ Given: réussite d’une requête
+        
+        When: la ressource a été récupérée et est transmise dans le corps du message  
+        Then: Le code de statut de réponse &quot;HTTP 200 OK&quot; indique la réussite d&#x27;une requête
+        
+        2/ Given: Les résultats pour la recherche de Sherlock Homes ne concernent que ce titre
+        
+        When: Une recherche sur “Sherlock Homes” est envoyée  
+        Then: Le premier résultat visible est l’ouvrage “SHERLOCK HOMES 03 The Adventures of Sherlock Holmes”
+        
+        3/ Given: La requête permet d&#x27;afficher la catégorie
+        
+        When: Une recherche se lance  
+        Then: La catégorie est affichée
+        
+        4/ Given: Le paramètre maxResults permet de sélectionner 10 ouvrages sur 652
+        
+        When: le paramètre “maxResults” est sélectionné  
+        Then: Seuls 10 résultats sont présentés
+        
+        5/ Given: ERREUR provoquée: le paramètre maxResults affiche 10 ouvrages sur 652
+        
+        When: On veut affiché plus de 10 résultats  
+        Then: Impossible de voir &gt; msg d&#x27;erreur
+        
+        6/ Given: La data “Kind” est lié à la valeur “books#volumes&quot;
+        
+        When: Une recherche sur “Sherlock Homes” est envoyée ET que la data “Kind” du premier résultat est visible dans le body  
+        Then: Elle est liée à la valeur “books#volumes&quot;</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> GET</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="https://www.googleapis.com/books/v1/volumes?q&#x3D;sherlock%20homes&amp;maxResults&#x3D;10" target="_blank">https://www.googleapis.com/books/v1/volumes?q&#x3D;sherlock%20homes&amp;maxResults&#x3D;10</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 200 - OK</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 834ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 37.39KB</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar  bg-danger" style="width: 100%" role="progressbar">
+                                            <h5 style="padding-top:5px;"><strong>83 %</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td>PostmanRuntime/7.29.0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td>*/*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td>no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td>9363575e-7fc0-44f5-8b24-192f4cf74ecf</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td>www.googleapis.com</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Encoding</td>
+                                                        <td>gzip, deflate, br</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td>keep-alive</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Type</td>
+                                                    <td>application/json; charset&#x3D;UTF-8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Vary</td>
+                                                    <td>Origin</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Vary</td>
+                                                    <td>X-Origin</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Vary</td>
+                                                    <td>Referer</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Encoding</td>
+                                                    <td>gzip</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Date</td>
+                                                    <td>Sun, 23 Jan 2022 11:52:50 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Server</td>
+                                                    <td>ESF</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Cache-Control</td>
+                                                    <td>private</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-XSS-Protection</td>
+                                                    <td>0</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Frame-Options</td>
+                                                    <td>SAMEORIGIN</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Content-Type-Options</td>
+                                                    <td>nosniff</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Alt-Svc</td>
+                                                    <td>h3&#x3D;&quot;:443&quot;; ma&#x3D;2592000,h3-29&#x3D;&quot;:443&quot;; ma&#x3D;2592000,h3-Q050&#x3D;&quot;:443&quot;; ma&#x3D;2592000,h3-Q046&#x3D;&quot;:443&quot;; ma&#x3D;2592000,h3-Q043&#x3D;&quot;:443&quot;; ma&#x3D;2592000,quic&#x3D;&quot;:443&quot;; ma&#x3D;2592000; v&#x3D;&quot;46,43&quot;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Transfer-Encoding</td>
+                                                    <td>chunked</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-ad23ee7a-235b-470c-8e53-7300e3498005" class="prettyPrint">{
+          &quot;kind&quot;: &quot;books#volumes&quot;,
+          &quot;totalItems&quot;: 900,
+          &quot;items&quot;: [
+            {
+              &quot;kind&quot;: &quot;books#volume&quot;,
+              &quot;id&quot;: &quot;4D4zjgEACAAJ&quot;,
+              &quot;etag&quot;: &quot;d61RBBy75i0&quot;,
+              &quot;selfLink&quot;: &quot;https://www.googleapis.com/books/v1/volumes/4D4zjgEACAAJ&quot;,
+              &quot;volumeInfo&quot;: {
+                &quot;title&quot;: &quot;Les aventures de Sherlock Holmes&quot;,
+                &quot;subtitle&quot;: &quot;L&#x27;intégrale des nouvelles&quot;,
+                &quot;authors&quot;: [
+                  &quot;Arthur Conan Doyle&quot;
+                ],
+                &quot;publisher&quot;: &quot;Omnibus&quot;,
+                &quot;publishedDate&quot;: &quot;2015-10-01&quot;,
+                &quot;description&quot;: &quot;Plus de 800 pages, une maquette élaborée, les illustrations de Sidney Paget parues dans le Strand, la traduction intégrale d&#x27;Eric Wittersheim, un prix de vente étudié... Tout est réuni pour faire de cet album aussi somptueux qu&#x27;impressionnant un must pour les amateurs du génial détective - et ils sont nombreux, petits et grands !&quot;,
+                &quot;industryIdentifiers&quot;: [
+                  {
+                    &quot;type&quot;: &quot;ISBN_10&quot;,
+                    &quot;identifier&quot;: &quot;2258108322&quot;
+                  },
+                  {
+                    &quot;type&quot;: &quot;ISBN_13&quot;,
+                    &quot;identifier&quot;: &quot;9782258108325&quot;
+                  }
+                ],
+                &quot;readingModes&quot;: {
+                  &quot;text&quot;: false,
+                  &quot;image&quot;: false
+                },
+                &quot;pageCount&quot;: 815,
+                &quot;printType&quot;: &quot;BOOK&quot;,
+                &quot;maturityRating&quot;: &quot;NOT_MATURE&quot;,
+                &quot;allowAnonLogging&quot;: false,
+                &quot;contentVersion&quot;: &quot;preview-1.0.0&quot;,
+                &quot;language&quot;: &quot;fr&quot;,
+                &quot;previewLink&quot;: &quot;http://books.google.fr/books?id&#x3D;4D4zjgEACAAJ&amp;dq&#x3D;sherlock+homes&amp;hl&#x3D;&amp;cd&#x3D;1&amp;source&#x3D;gbs_api&quot;,
+                &quot;infoLink&quot;: &quot;http://books.google.fr/books?id&#x3D;4D4zjgEACAAJ&amp;dq&#x3D;sherlock+homes&amp;hl&#x3D;&amp;source&#x3D;gbs_api&quot;,
+                &quot;canonicalVolumeLink&quot;: &quot;https://books.google.com/books/about/Les_aventures_de_Sherlock_Holmes.html?hl&#x3D;&amp;id&#x3D;4D4zjgEACAAJ&quot;
+              },
+              &quot;saleInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;saleability&quot;: &quot;NOT_FOR_SALE&quot;,
+                &quot;isEbook&quot;: false
+              },
+              &quot;accessInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;viewability&quot;: &quot;NO_PAGES&quot;,
+                &quot;embeddable&quot;: false,
+                &quot;publicDomain&quot;: false,
+                &quot;textToSpeechPermission&quot;: &quot;ALLOWED&quot;,
+                &quot;epub&quot;: {
+                  &quot;isAvailable&quot;: false
+                },
+                &quot;pdf&quot;: {
+                  &quot;isAvailable&quot;: false
+                },
+                &quot;webReaderLink&quot;: &quot;http://play.google.com/books/reader?id&#x3D;4D4zjgEACAAJ&amp;hl&#x3D;&amp;printsec&#x3D;frontcover&amp;source&#x3D;gbs_api&quot;,
+                &quot;accessViewStatus&quot;: &quot;NONE&quot;,
+                &quot;quoteSharingAllowed&quot;: false
+              },
+              &quot;searchInfo&quot;: {
+                &quot;textSnippet&quot;: &quot;Plus de 800 pages, une maquette élaborée, les illustrations de Sidney Paget parues dans le Strand, la traduction intégrale d&amp;#39;Eric Wittersheim, un prix de vente étudié.&quot;
+              }
+            },
+            {
+              &quot;kind&quot;: &quot;books#volume&quot;,
+              &quot;id&quot;: &quot;iqruugAACAAJ&quot;,
+              &quot;etag&quot;: &quot;1KePnZ6mmdM&quot;,
+              &quot;selfLink&quot;: &quot;https://www.googleapis.com/books/v1/volumes/iqruugAACAAJ&quot;,
+              &quot;volumeInfo&quot;: {
+                &quot;title&quot;: &quot;Les énigmes de Sherlock Holmes&quot;,
+                &quot;authors&quot;: [
+                  &quot;John Watson (personnage fictif.)&quot;,
+                  &quot;Tim Dedopulos&quot;
+                ],
+                &quot;publisher&quot;: &quot;Hachette Pratique&quot;,
+                &quot;publishedDate&quot;: &quot;2012-05-02&quot;,
+                &quot;description&quot;: &quot;Accompagnez le plus grand détective du monde et utilisez votre propre sens de la déduction pour résoudre ces énigmes ingénieuses. 150 énigmes de tous niveaux qui sollicitent votre logique et votre esprit d&#x27;analyse.&quot;,
+                &quot;industryIdentifiers&quot;: [
+                  {
+                    &quot;type&quot;: &quot;ISBN_10&quot;,
+                    &quot;identifier&quot;: &quot;2012305342&quot;
+                  },
+                  {
+                    &quot;type&quot;: &quot;ISBN_13&quot;,
+                    &quot;identifier&quot;: &quot;9782012305342&quot;
+                  }
+                ],
+                &quot;readingModes&quot;: {
+                  &quot;text&quot;: false,
+                  &quot;image&quot;: false
+                },
+                &quot;pageCount&quot;: 288,
+                &quot;printType&quot;: &quot;BOOK&quot;,
+                &quot;maturityRating&quot;: &quot;NOT_MATURE&quot;,
+                &quot;allowAnonLogging&quot;: false,
+                &quot;contentVersion&quot;: &quot;preview-1.0.0&quot;,
+                &quot;language&quot;: &quot;fr&quot;,
+                &quot;previewLink&quot;: &quot;http://books.google.fr/books?id&#x3D;iqruugAACAAJ&amp;dq&#x3D;sherlock+homes&amp;hl&#x3D;&amp;cd&#x3D;2&amp;source&#x3D;gbs_api&quot;,
+                &quot;infoLink&quot;: &quot;http://books.google.fr/books?id&#x3D;iqruugAACAAJ&amp;dq&#x3D;sherlock+homes&amp;hl&#x3D;&amp;source&#x3D;gbs_api&quot;,
+                &quot;canonicalVolumeLink&quot;: &quot;https://books.google.com/books/about/Les_%C3%A9nigmes_de_Sherlock_Holmes.html?hl&#x3D;&amp;id&#x3D;iqruugAACAAJ&quot;
+              },
+              &quot;saleInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;saleability&quot;: &quot;NOT_FOR_SALE&quot;,
+                &quot;isEbook&quot;: false
+              },
+              &quot;accessInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;viewability&quot;: &quot;NO_PAGES&quot;,
+                &quot;embeddable&quot;: false,
+                &quot;publicDomain&quot;: false,
+                &quot;textToSpeechPermission&quot;: &quot;ALLOWED&quot;,
+                &quot;epub&quot;: {
+                  &quot;isAvailable&quot;: false
+                },
+                &quot;pdf&quot;: {
+                  &quot;isAvailable&quot;: false
+                },
+                &quot;webReaderLink&quot;: &quot;http://play.google.com/books/reader?id&#x3D;iqruugAACAAJ&amp;hl&#x3D;&amp;printsec&#x3D;frontcover&amp;source&#x3D;gbs_api&quot;,
+                &quot;accessViewStatus&quot;: &quot;NONE&quot;,
+                &quot;quoteSharingAllowed&quot;: false
+              },
+              &quot;searchInfo&quot;: {
+                &quot;textSnippet&quot;: &quot;150 énigmes à résoudre, inspirées des célèbres enquètes de Sherlock Holmes.&quot;
+              }
+            },
+            {
+              &quot;kind&quot;: &quot;books#volume&quot;,
+              &quot;id&quot;: &quot;R-vbDwAAQBAJ&quot;,
+              &quot;etag&quot;: &quot;jjNIu7MRXRo&quot;,
+              &quot;selfLink&quot;: &quot;https://www.googleapis.com/books/v1/volumes/R-vbDwAAQBAJ&quot;,
+              &quot;volumeInfo&quot;: {
+                &quot;title&quot;: &quot;SHERLOCK HOMES 04 The Memoirs of Sherlock Holmes 셜록 홈즈 04 셜록 홈즈의 회상록_영문판&quot;,
+                &quot;authors&quot;: [
+                  &quot;아서 코난 도일 Sir Arthur Conan Doyle&quot;
+                ],
+                &quot;publisher&quot;: &quot;스토리터치&quot;,
+                &quot;publishedDate&quot;: &quot;2020-04-08&quot;,
+                &quot;description&quot;: &quot;*이 도서는 영어 원문으로 된 도서입니다. 영국의 소설가 아서 코난 도일이 쓴 추리소설 《셜록 홈즈 전집》. 탐정의 대명사라 불리는 주인공 셜록 홈즈는 등장과 동시에 독자들을 매료시킨 인물이다. 날카로운 추리력과 카리스마를 갖춘 명탐정 셜록 홈즈와 그의 동료 왓슨 박사는 아주 작은 실마리조차 놓치지 않고 사건을 해결해 나간다. 독자들을 압도하는 그의 활약상을 영어 원서를 통해 만나 보시기 바란다.&quot;,
+                &quot;industryIdentifiers&quot;: [
+                  {
+                    &quot;type&quot;: &quot;ISBN_13&quot;,
+                    &quot;identifier&quot;: &quot;9791186515501&quot;
+                  }
+                ],
+                &quot;readingModes&quot;: {
+                  &quot;text&quot;: true,
+                  &quot;image&quot;: true
+                },
+                &quot;printType&quot;: &quot;BOOK&quot;,
+                &quot;categories&quot;: [
+                  &quot;Fiction&quot;
+                ],
+                &quot;maturityRating&quot;: &quot;NOT_MATURE&quot;,
+                &quot;allowAnonLogging&quot;: false,
+                &quot;contentVersion&quot;: &quot;1.1.1.0.preview.3&quot;,
+                &quot;panelizationSummary&quot;: {
+                  &quot;containsEpubBubbles&quot;: false,
+                  &quot;containsImageBubbles&quot;: false
+                },
+                &quot;imageLinks&quot;: {
+                  &quot;smallThumbnail&quot;: &quot;http://books.google.com/books/content?id&#x3D;R-vbDwAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;5&amp;edge&#x3D;curl&amp;source&#x3D;gbs_api&quot;,
+                  &quot;thumbnail&quot;: &quot;http://books.google.com/books/content?id&#x3D;R-vbDwAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;1&amp;edge&#x3D;curl&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;language&quot;: &quot;en&quot;,
+                &quot;previewLink&quot;: &quot;http://books.google.fr/books?id&#x3D;R-vbDwAAQBAJ&amp;pg&#x3D;PT339&amp;dq&#x3D;sherlock+homes&amp;hl&#x3D;&amp;cd&#x3D;3&amp;source&#x3D;gbs_api&quot;,
+                &quot;infoLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;R-vbDwAAQBAJ&amp;source&#x3D;gbs_api&quot;,
+                &quot;canonicalVolumeLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;R-vbDwAAQBAJ&quot;
+              },
+              &quot;saleInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;saleability&quot;: &quot;FOR_SALE&quot;,
+                &quot;isEbook&quot;: true,
+                &quot;listPrice&quot;: {
+                  &quot;amount&quot;: 4.53,
+                  &quot;currencyCode&quot;: &quot;EUR&quot;
+                },
+                &quot;retailPrice&quot;: {
+                  &quot;amount&quot;: 4.3,
+                  &quot;currencyCode&quot;: &quot;EUR&quot;
+                },
+                &quot;buyLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;R-vbDwAAQBAJ&amp;rdid&#x3D;book-R-vbDwAAQBAJ&amp;rdot&#x3D;1&amp;source&#x3D;gbs_api&quot;,
+                &quot;offers&quot;: [
+                  {
+                    &quot;finskyOfferType&quot;: 1,
+                    &quot;listPrice&quot;: {
+                      &quot;amountInMicros&quot;: 4530000,
+                      &quot;currencyCode&quot;: &quot;EUR&quot;
+                    },
+                    &quot;retailPrice&quot;: {
+                      &quot;amountInMicros&quot;: 4300000,
+                      &quot;currencyCode&quot;: &quot;EUR&quot;
+                    },
+                    &quot;giftable&quot;: true
+                  }
+                ]
+              },
+              &quot;accessInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;viewability&quot;: &quot;PARTIAL&quot;,
+                &quot;embeddable&quot;: true,
+                &quot;publicDomain&quot;: false,
+                &quot;textToSpeechPermission&quot;: &quot;ALLOWED&quot;,
+                &quot;epub&quot;: {
+                  &quot;isAvailable&quot;: true,
+                  &quot;acsTokenLink&quot;: &quot;http://books.google.fr/books/download/SHERLOCK_HOMES_04_The_Memoirs_of_Sherloc-sample-epub.acsm?id&#x3D;R-vbDwAAQBAJ&amp;format&#x3D;epub&amp;output&#x3D;acs4_fulfillment_token&amp;dl_type&#x3D;sample&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;pdf&quot;: {
+                  &quot;isAvailable&quot;: true,
+                  &quot;acsTokenLink&quot;: &quot;http://books.google.fr/books/download/SHERLOCK_HOMES_04_The_Memoirs_of_Sherloc-sample-pdf.acsm?id&#x3D;R-vbDwAAQBAJ&amp;format&#x3D;pdf&amp;output&#x3D;acs4_fulfillment_token&amp;dl_type&#x3D;sample&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;webReaderLink&quot;: &quot;http://play.google.com/books/reader?id&#x3D;R-vbDwAAQBAJ&amp;hl&#x3D;&amp;printsec&#x3D;frontcover&amp;source&#x3D;gbs_api&quot;,
+                &quot;accessViewStatus&quot;: &quot;SAMPLE&quot;,
+                &quot;quoteSharingAllowed&quot;: false
+              },
+              &quot;searchInfo&quot;: {
+                &quot;textSnippet&quot;: &quot;\u003cb\u003eSherlock Holmes\u003c/b\u003e stopped at a door some little distance from the Carlton, and, cautioning me not to speak, he led the way into the hall. Through the glass paneling I caught a glimpse of a large and luxurious room, in which a considerable&amp;nbsp;...&quot;
+              }
+            },
+            {
+              &quot;kind&quot;: &quot;books#volume&quot;,
+              &quot;id&quot;: &quot;O-vbDwAAQBAJ&quot;,
+              &quot;etag&quot;: &quot;Jzo62jPP1H0&quot;,
+              &quot;selfLink&quot;: &quot;https://www.googleapis.com/books/v1/volumes/O-vbDwAAQBAJ&quot;,
+              &quot;volumeInfo&quot;: {
+                &quot;title&quot;: &quot;SHERLOCK HOMES 03 The Adventures of Sherlock Holmes 셜록 홈즈 03 셜록 홈즈의 모험_영문판&quot;,
+                &quot;authors&quot;: [
+                  &quot;아서 코난 도일 Sir Arthur Conan Doyle&quot;
+                ],
+                &quot;publisher&quot;: &quot;스토리터치&quot;,
+                &quot;publishedDate&quot;: &quot;2020-04-08&quot;,
+                &quot;description&quot;: &quot;*이 도서는 영어 원문으로 된 도서입니다. 영국의 소설가 아서 코난 도일이 쓴 추리소설 《셜록 홈즈 전집》. 탐정의 대명사라 불리는 주인공 셜록 홈즈는 등장과 동시에 독자들을 매료시킨 인물이다. 날카로운 추리력과 카리스마를 갖춘 명탐정 셜록 홈즈와 그의 동료 왓슨 박사는 아주 작은 실마리조차 놓치지 않고 사건을 해결해 나간다. 독자들을 압도하는 그의 활약상을 영어 원서를 통해 만나 보시기 바란다.&quot;,
+                &quot;industryIdentifiers&quot;: [
+                  {
+                    &quot;type&quot;: &quot;ISBN_13&quot;,
+                    &quot;identifier&quot;: &quot;9791186515495&quot;
+                  }
+                ],
+                &quot;readingModes&quot;: {
+                  &quot;text&quot;: true,
+                  &quot;image&quot;: true
+                },
+                &quot;printType&quot;: &quot;BOOK&quot;,
+                &quot;categories&quot;: [
+                  &quot;Fiction&quot;
+                ],
+                &quot;maturityRating&quot;: &quot;NOT_MATURE&quot;,
+                &quot;allowAnonLogging&quot;: false,
+                &quot;contentVersion&quot;: &quot;1.1.1.0.preview.3&quot;,
+                &quot;panelizationSummary&quot;: {
+                  &quot;containsEpubBubbles&quot;: false,
+                  &quot;containsImageBubbles&quot;: false
+                },
+                &quot;imageLinks&quot;: {
+                  &quot;smallThumbnail&quot;: &quot;http://books.google.com/books/content?id&#x3D;O-vbDwAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;5&amp;edge&#x3D;curl&amp;source&#x3D;gbs_api&quot;,
+                  &quot;thumbnail&quot;: &quot;http://books.google.com/books/content?id&#x3D;O-vbDwAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;1&amp;edge&#x3D;curl&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;language&quot;: &quot;en&quot;,
+                &quot;previewLink&quot;: &quot;http://books.google.fr/books?id&#x3D;O-vbDwAAQBAJ&amp;pg&#x3D;PT218&amp;dq&#x3D;sherlock+homes&amp;hl&#x3D;&amp;cd&#x3D;4&amp;source&#x3D;gbs_api&quot;,
+                &quot;infoLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;O-vbDwAAQBAJ&amp;source&#x3D;gbs_api&quot;,
+                &quot;canonicalVolumeLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;O-vbDwAAQBAJ&quot;
+              },
+              &quot;saleInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;saleability&quot;: &quot;FOR_SALE&quot;,
+                &quot;isEbook&quot;: true,
+                &quot;listPrice&quot;: {
+                  &quot;amount&quot;: 4.53,
+                  &quot;currencyCode&quot;: &quot;EUR&quot;
+                },
+                &quot;retailPrice&quot;: {
+                  &quot;amount&quot;: 4.3,
+                  &quot;currencyCode&quot;: &quot;EUR&quot;
+                },
+                &quot;buyLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;O-vbDwAAQBAJ&amp;rdid&#x3D;book-O-vbDwAAQBAJ&amp;rdot&#x3D;1&amp;source&#x3D;gbs_api&quot;,
+                &quot;offers&quot;: [
+                  {
+                    &quot;finskyOfferType&quot;: 1,
+                    &quot;listPrice&quot;: {
+                      &quot;amountInMicros&quot;: 4530000,
+                      &quot;currencyCode&quot;: &quot;EUR&quot;
+                    },
+                    &quot;retailPrice&quot;: {
+                      &quot;amountInMicros&quot;: 4300000,
+                      &quot;currencyCode&quot;: &quot;EUR&quot;
+                    },
+                    &quot;giftable&quot;: true
+                  }
+                ]
+              },
+              &quot;accessInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;viewability&quot;: &quot;PARTIAL&quot;,
+                &quot;embeddable&quot;: true,
+                &quot;publicDomain&quot;: false,
+                &quot;textToSpeechPermission&quot;: &quot;ALLOWED&quot;,
+                &quot;epub&quot;: {
+                  &quot;isAvailable&quot;: true,
+                  &quot;acsTokenLink&quot;: &quot;http://books.google.fr/books/download/SHERLOCK_HOMES_03_The_Adventures_of_Sher-sample-epub.acsm?id&#x3D;O-vbDwAAQBAJ&amp;format&#x3D;epub&amp;output&#x3D;acs4_fulfillment_token&amp;dl_type&#x3D;sample&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;pdf&quot;: {
+                  &quot;isAvailable&quot;: true,
+                  &quot;acsTokenLink&quot;: &quot;http://books.google.fr/books/download/SHERLOCK_HOMES_03_The_Adventures_of_Sher-sample-pdf.acsm?id&#x3D;O-vbDwAAQBAJ&amp;format&#x3D;pdf&amp;output&#x3D;acs4_fulfillment_token&amp;dl_type&#x3D;sample&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;webReaderLink&quot;: &quot;http://play.google.com/books/reader?id&#x3D;O-vbDwAAQBAJ&amp;hl&#x3D;&amp;printsec&#x3D;frontcover&amp;source&#x3D;gbs_api&quot;,
+                &quot;accessViewStatus&quot;: &quot;SAMPLE&quot;,
+                &quot;quoteSharingAllowed&quot;: false
+              },
+              &quot;searchInfo&quot;: {
+                &quot;textSnippet&quot;: &quot;It was difficult to refuse any of \u003cb\u003eSherlock Holmes\u003c/b\u003e&amp;#39; requests, for they were always so exceedingly definite, and put forward with such a quiet air of mastery. I felt, however, that when Whitney was once confined in the cab my mission was&amp;nbsp;...&quot;
+              }
+            },
+            {
+              &quot;kind&quot;: &quot;books#volume&quot;,
+              &quot;id&quot;: &quot;_-jbDwAAQBAJ&quot;,
+              &quot;etag&quot;: &quot;Dj6w7mL8zdE&quot;,
+              &quot;selfLink&quot;: &quot;https://www.googleapis.com/books/v1/volumes/_-jbDwAAQBAJ&quot;,
+              &quot;volumeInfo&quot;: {
+                &quot;title&quot;: &quot;SHERLOCK HOMES 01 A STUDY IN SCARLET 셜록 홈즈 01 진홍빛 연구_영문판&quot;,
+                &quot;authors&quot;: [
+                  &quot;아서 코난 도일 Sir Arthur Conan Doyle&quot;
+                ],
+                &quot;publisher&quot;: &quot;스토리터치&quot;,
+                &quot;description&quot;: &quot;*이 도서는 영어 원문으로 된 도서입니다. 영국의 소설가 아서 코난 도일이 쓴 추리소설 《셜록 홈즈 전집》. 탐정의 대명사라 불리는 주인공 셜록 홈즈는 등장과 동시에 독자들을 매료시킨 인물이다. 날카로운 추리력과 카리스마를 갖춘 명탐정 셜록 홈즈와 그의 동료 왓슨 박사는 아주 작은 실마리조차 놓치지 않고 사건을 해결해 나간다. 독자들을 압도하는 그의 활약상을 영어 원서를 통해 만나 보시기 바란다.&quot;,
+                &quot;industryIdentifiers&quot;: [
+                  {
+                    &quot;type&quot;: &quot;ISBN_13&quot;,
+                    &quot;identifier&quot;: &quot;9791186515471&quot;
+                  }
+                ],
+                &quot;readingModes&quot;: {
+                  &quot;text&quot;: true,
+                  &quot;image&quot;: true
+                },
+                &quot;printType&quot;: &quot;BOOK&quot;,
+                &quot;categories&quot;: [
+                  &quot;Fiction&quot;
+                ],
+                &quot;maturityRating&quot;: &quot;NOT_MATURE&quot;,
+                &quot;allowAnonLogging&quot;: false,
+                &quot;contentVersion&quot;: &quot;1.1.1.0.preview.3&quot;,
+                &quot;panelizationSummary&quot;: {
+                  &quot;containsEpubBubbles&quot;: false,
+                  &quot;containsImageBubbles&quot;: false
+                },
+                &quot;imageLinks&quot;: {
+                  &quot;smallThumbnail&quot;: &quot;http://books.google.com/books/content?id&#x3D;_-jbDwAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;5&amp;edge&#x3D;curl&amp;source&#x3D;gbs_api&quot;,
+                  &quot;thumbnail&quot;: &quot;http://books.google.com/books/content?id&#x3D;_-jbDwAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;1&amp;edge&#x3D;curl&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;language&quot;: &quot;en&quot;,
+                &quot;previewLink&quot;: &quot;http://books.google.fr/books?id&#x3D;_-jbDwAAQBAJ&amp;pg&#x3D;PT72&amp;dq&#x3D;sherlock+homes&amp;hl&#x3D;&amp;cd&#x3D;5&amp;source&#x3D;gbs_api&quot;,
+                &quot;infoLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;_-jbDwAAQBAJ&amp;source&#x3D;gbs_api&quot;,
+                &quot;canonicalVolumeLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;_-jbDwAAQBAJ&quot;
+              },
+              &quot;saleInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;saleability&quot;: &quot;FOR_SALE&quot;,
+                &quot;isEbook&quot;: true,
+                &quot;listPrice&quot;: {
+                  &quot;amount&quot;: 4.53,
+                  &quot;currencyCode&quot;: &quot;EUR&quot;
+                },
+                &quot;retailPrice&quot;: {
+                  &quot;amount&quot;: 4.3,
+                  &quot;currencyCode&quot;: &quot;EUR&quot;
+                },
+                &quot;buyLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;_-jbDwAAQBAJ&amp;rdid&#x3D;book-_-jbDwAAQBAJ&amp;rdot&#x3D;1&amp;source&#x3D;gbs_api&quot;,
+                &quot;offers&quot;: [
+                  {
+                    &quot;finskyOfferType&quot;: 1,
+                    &quot;listPrice&quot;: {
+                      &quot;amountInMicros&quot;: 4530000,
+                      &quot;currencyCode&quot;: &quot;EUR&quot;
+                    },
+                    &quot;retailPrice&quot;: {
+                      &quot;amountInMicros&quot;: 4300000,
+                      &quot;currencyCode&quot;: &quot;EUR&quot;
+                    },
+                    &quot;giftable&quot;: true
+                  }
+                ]
+              },
+              &quot;accessInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;viewability&quot;: &quot;PARTIAL&quot;,
+                &quot;embeddable&quot;: true,
+                &quot;publicDomain&quot;: false,
+                &quot;textToSpeechPermission&quot;: &quot;ALLOWED&quot;,
+                &quot;epub&quot;: {
+                  &quot;isAvailable&quot;: true,
+                  &quot;acsTokenLink&quot;: &quot;http://books.google.fr/books/download/SHERLOCK_HOMES_01_A_STUDY_IN_SCARLET_%EC%85%9C-sample-epub.acsm?id&#x3D;_-jbDwAAQBAJ&amp;format&#x3D;epub&amp;output&#x3D;acs4_fulfillment_token&amp;dl_type&#x3D;sample&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;pdf&quot;: {
+                  &quot;isAvailable&quot;: true,
+                  &quot;acsTokenLink&quot;: &quot;http://books.google.fr/books/download/SHERLOCK_HOMES_01_A_STUDY_IN_SCARLET_%EC%85%9C-sample-pdf.acsm?id&#x3D;_-jbDwAAQBAJ&amp;format&#x3D;pdf&amp;output&#x3D;acs4_fulfillment_token&amp;dl_type&#x3D;sample&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;webReaderLink&quot;: &quot;http://play.google.com/books/reader?id&#x3D;_-jbDwAAQBAJ&amp;hl&#x3D;&amp;printsec&#x3D;frontcover&amp;source&#x3D;gbs_api&quot;,
+                &quot;accessViewStatus&quot;: &quot;SAMPLE&quot;,
+                &quot;quoteSharingAllowed&quot;: false
+              },
+              &quot;searchInfo&quot;: {
+                &quot;textSnippet&quot;: &quot;asked \u003cb\u003eSherlock Holmes\u003c/b\u003e. John Rance appeared to be somewhat irritated at this digression. “He was an uncommon drunk sort o&amp;#39; man,” he said. “He&amp;#39;d ha&amp;#39; found hisself in the station if we hadn&amp;#39;t been so took up.” “His face—his dress—didn&amp;#39;t&amp;nbsp;...&quot;
+              }
+            },
+            {
+              &quot;kind&quot;: &quot;books#volume&quot;,
+              &quot;id&quot;: &quot;b-yMDwAAQBAJ&quot;,
+              &quot;etag&quot;: &quot;WnBkvxxUjw4&quot;,
+              &quot;selfLink&quot;: &quot;https://www.googleapis.com/books/v1/volumes/b-yMDwAAQBAJ&quot;,
+              &quot;volumeInfo&quot;: {
+                &quot;title&quot;: &quot;Les Archives de Sherlock Holmes&quot;,
+                &quot;authors&quot;: [
+                  &quot;Arthur conan Doyle&quot;
+                ],
+                &quot;publisher&quot;: &quot;Archipoche&quot;,
+                &quot;publishedDate&quot;: &quot;2019-03-06&quot;,
+                &quot;description&quot;: &quot;L&#x27;intégralité des enquêtes du célèbre détective Sherlock Holmes republiées dans de belles éditions modernes et élégantes. 12 nouvelles de 1921 à 1927 :- La Pierre de Mazarin- Le Problème du pont de Thor- L&#x27;Homme qui grimpait- Le Vampire du Sussex- Les Trois Garrideb- L&#x27;Illustre Client- Les Trois Pignons- Le Soldat blanchi- La Crinière du lion- Le Marchand de couleurs retiré des affaires- La Pensionnaire voilée- L&#x27;Aventure de Shoschombe Old Place&quot;,
+                &quot;industryIdentifiers&quot;: [
+                  {
+                    &quot;type&quot;: &quot;ISBN_13&quot;,
+                    &quot;identifier&quot;: &quot;9782377352906&quot;
+                  },
+                  {
+                    &quot;type&quot;: &quot;ISBN_10&quot;,
+                    &quot;identifier&quot;: &quot;2377352901&quot;
+                  }
+                ],
+                &quot;readingModes&quot;: {
+                  &quot;text&quot;: true,
+                  &quot;image&quot;: true
+                },
+                &quot;pageCount&quot;: 240,
+                &quot;printType&quot;: &quot;BOOK&quot;,
+                &quot;categories&quot;: [
+                  &quot;Fiction&quot;
+                ],
+                &quot;maturityRating&quot;: &quot;NOT_MATURE&quot;,
+                &quot;allowAnonLogging&quot;: false,
+                &quot;contentVersion&quot;: &quot;1.3.3.0.preview.3&quot;,
+                &quot;panelizationSummary&quot;: {
+                  &quot;containsEpubBubbles&quot;: false,
+                  &quot;containsImageBubbles&quot;: false
+                },
+                &quot;imageLinks&quot;: {
+                  &quot;smallThumbnail&quot;: &quot;http://books.google.com/books/content?id&#x3D;b-yMDwAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;5&amp;edge&#x3D;curl&amp;source&#x3D;gbs_api&quot;,
+                  &quot;thumbnail&quot;: &quot;http://books.google.com/books/content?id&#x3D;b-yMDwAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;1&amp;edge&#x3D;curl&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;language&quot;: &quot;fr&quot;,
+                &quot;previewLink&quot;: &quot;http://books.google.fr/books?id&#x3D;b-yMDwAAQBAJ&amp;pg&#x3D;PT271&amp;dq&#x3D;sherlock+homes&amp;hl&#x3D;&amp;cd&#x3D;6&amp;source&#x3D;gbs_api&quot;,
+                &quot;infoLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;b-yMDwAAQBAJ&amp;source&#x3D;gbs_api&quot;,
+                &quot;canonicalVolumeLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;b-yMDwAAQBAJ&quot;
+              },
+              &quot;saleInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;saleability&quot;: &quot;FOR_SALE&quot;,
+                &quot;isEbook&quot;: true,
+                &quot;listPrice&quot;: {
+                  &quot;amount&quot;: 7.49,
+                  &quot;currencyCode&quot;: &quot;EUR&quot;
+                },
+                &quot;retailPrice&quot;: {
+                  &quot;amount&quot;: 7.49,
+                  &quot;currencyCode&quot;: &quot;EUR&quot;
+                },
+                &quot;buyLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;b-yMDwAAQBAJ&amp;rdid&#x3D;book-b-yMDwAAQBAJ&amp;rdot&#x3D;1&amp;source&#x3D;gbs_api&quot;,
+                &quot;offers&quot;: [
+                  {
+                    &quot;finskyOfferType&quot;: 1,
+                    &quot;listPrice&quot;: {
+                      &quot;amountInMicros&quot;: 7490000,
+                      &quot;currencyCode&quot;: &quot;EUR&quot;
+                    },
+                    &quot;retailPrice&quot;: {
+                      &quot;amountInMicros&quot;: 7490000,
+                      &quot;currencyCode&quot;: &quot;EUR&quot;
+                    },
+                    &quot;giftable&quot;: true
+                  }
+                ]
+              },
+              &quot;accessInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;viewability&quot;: &quot;PARTIAL&quot;,
+                &quot;embeddable&quot;: true,
+                &quot;publicDomain&quot;: false,
+                &quot;textToSpeechPermission&quot;: &quot;ALLOWED&quot;,
+                &quot;epub&quot;: {
+                  &quot;isAvailable&quot;: true,
+                  &quot;acsTokenLink&quot;: &quot;http://books.google.fr/books/download/Les_Archives_de_Sherlock_Holmes-sample-epub.acsm?id&#x3D;b-yMDwAAQBAJ&amp;format&#x3D;epub&amp;output&#x3D;acs4_fulfillment_token&amp;dl_type&#x3D;sample&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;pdf&quot;: {
+                  &quot;isAvailable&quot;: true,
+                  &quot;acsTokenLink&quot;: &quot;http://books.google.fr/books/download/Les_Archives_de_Sherlock_Holmes-sample-pdf.acsm?id&#x3D;b-yMDwAAQBAJ&amp;format&#x3D;pdf&amp;output&#x3D;acs4_fulfillment_token&amp;dl_type&#x3D;sample&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;webReaderLink&quot;: &quot;http://play.google.com/books/reader?id&#x3D;b-yMDwAAQBAJ&amp;hl&#x3D;&amp;printsec&#x3D;frontcover&amp;source&#x3D;gbs_api&quot;,
+                &quot;accessViewStatus&quot;: &quot;SAMPLE&quot;,
+                &quot;quoteSharingAllowed&quot;: false
+              },
+              &quot;searchInfo&quot;: {
+                &quot;textSnippet&quot;: &quot;Et pourtart, e succès des nouvelles de Conan Doyle s&amp;#39;acccmpagna très vite dun phénomène étonnant : ncmbre de gens crcyaient dur ccmme fer à l&amp;#39;existence physique de \u003cb\u003eSherlock Homes\u003c/b\u003e Cnse demande encore commentLImp3rei malertenduapuraitre&amp;nbsp;...&quot;
+              }
+            },
+            {
+              &quot;kind&quot;: &quot;books#volume&quot;,
+              &quot;id&quot;: &quot;ayFMEAAAQBAJ&quot;,
+              &quot;etag&quot;: &quot;ahSiMM+hqYk&quot;,
+              &quot;selfLink&quot;: &quot;https://www.googleapis.com/books/v1/volumes/ayFMEAAAQBAJ&quot;,
+              &quot;volumeInfo&quot;: {
+                &quot;title&quot;: &quot;Sherlock Holmes, anthologie du célèbre détective, sur papier et à l&#x27;écran&quot;,
+                &quot;authors&quot;: [
+                  &quot;Rodolphe Massé&quot;
+                ],
+                &quot;publisher&quot;: &quot;Hachette Heroes&quot;,
+                &quot;publishedDate&quot;: &quot;2021-11-10&quot;,
+                &quot;description&quot;: &quot;Des centaines de romans, nouvelles, films et BD, des dizaines de séries télévisées, mais aussi des produits dérivés en tout genre, des jeux, des musées, des sociétés holmésiennes... Le célèbre détective est bel et bien présent dans notre quotidien. Sherlock Holmes, c’est aussi et surtout un style, un état d’esprit qui inspirent nombre d’auteurs tentant de reproduire le coup d’éclat d’Arthur Conan Doyle. Des grandes oeuvres du canon holmésien aux meilleurs pastiches et apocryphes, en passant par les grands acteurs qui ont fixé l’allure du détective dans les mémoires, l’auteur propose ici une visite guidée de ce géant de la pop culture. UN MUST HAVE POUR TOUS LES FANS DU 221B BAKER STREET.&quot;,
+                &quot;industryIdentifiers&quot;: [
+                  {
+                    &quot;type&quot;: &quot;ISBN_13&quot;,
+                    &quot;identifier&quot;: &quot;9782016283509&quot;
+                  },
+                  {
+                    &quot;type&quot;: &quot;ISBN_10&quot;,
+                    &quot;identifier&quot;: &quot;2016283505&quot;
+                  }
+                ],
+                &quot;readingModes&quot;: {
+                  &quot;text&quot;: true,
+                  &quot;image&quot;: true
+                },
+                &quot;pageCount&quot;: 192,
+                &quot;printType&quot;: &quot;BOOK&quot;,
+                &quot;categories&quot;: [
+                  &quot;Juvenile Fiction&quot;
+                ],
+                &quot;maturityRating&quot;: &quot;NOT_MATURE&quot;,
+                &quot;allowAnonLogging&quot;: false,
+                &quot;contentVersion&quot;: &quot;1.1.1.0.preview.3&quot;,
+                &quot;panelizationSummary&quot;: {
+                  &quot;containsEpubBubbles&quot;: false,
+                  &quot;containsImageBubbles&quot;: false
+                },
+                &quot;imageLinks&quot;: {
+                  &quot;smallThumbnail&quot;: &quot;http://books.google.com/books/content?id&#x3D;ayFMEAAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;5&amp;edge&#x3D;curl&amp;source&#x3D;gbs_api&quot;,
+                  &quot;thumbnail&quot;: &quot;http://books.google.com/books/content?id&#x3D;ayFMEAAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;1&amp;edge&#x3D;curl&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;language&quot;: &quot;fr&quot;,
+                &quot;previewLink&quot;: &quot;http://books.google.fr/books?id&#x3D;ayFMEAAAQBAJ&amp;pg&#x3D;PA78&amp;dq&#x3D;sherlock+homes&amp;hl&#x3D;&amp;cd&#x3D;7&amp;source&#x3D;gbs_api&quot;,
+                &quot;infoLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;ayFMEAAAQBAJ&amp;source&#x3D;gbs_api&quot;,
+                &quot;canonicalVolumeLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;ayFMEAAAQBAJ&quot;
+              },
+              &quot;saleInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;saleability&quot;: &quot;FOR_SALE&quot;,
+                &quot;isEbook&quot;: true,
+                &quot;listPrice&quot;: {
+                  &quot;amount&quot;: 14.99,
+                  &quot;currencyCode&quot;: &quot;EUR&quot;
+                },
+                &quot;retailPrice&quot;: {
+                  &quot;amount&quot;: 14.99,
+                  &quot;currencyCode&quot;: &quot;EUR&quot;
+                },
+                &quot;buyLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;ayFMEAAAQBAJ&amp;rdid&#x3D;book-ayFMEAAAQBAJ&amp;rdot&#x3D;1&amp;source&#x3D;gbs_api&quot;,
+                &quot;offers&quot;: [
+                  {
+                    &quot;finskyOfferType&quot;: 1,
+                    &quot;listPrice&quot;: {
+                      &quot;amountInMicros&quot;: 14990000,
+                      &quot;currencyCode&quot;: &quot;EUR&quot;
+                    },
+                    &quot;retailPrice&quot;: {
+                      &quot;amountInMicros&quot;: 14990000,
+                      &quot;currencyCode&quot;: &quot;EUR&quot;
+                    },
+                    &quot;giftable&quot;: true
+                  }
+                ]
+              },
+              &quot;accessInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;viewability&quot;: &quot;PARTIAL&quot;,
+                &quot;embeddable&quot;: true,
+                &quot;publicDomain&quot;: false,
+                &quot;textToSpeechPermission&quot;: &quot;ALLOWED&quot;,
+                &quot;epub&quot;: {
+                  &quot;isAvailable&quot;: true,
+                  &quot;acsTokenLink&quot;: &quot;http://books.google.fr/books/download/Sherlock_Holmes_anthologie_du_c%C3%A9l%C3%A8bre-sample-epub.acsm?id&#x3D;ayFMEAAAQBAJ&amp;format&#x3D;epub&amp;output&#x3D;acs4_fulfillment_token&amp;dl_type&#x3D;sample&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;pdf&quot;: {
+                  &quot;isAvailable&quot;: true,
+                  &quot;acsTokenLink&quot;: &quot;http://books.google.fr/books/download/Sherlock_Holmes_anthologie_du_c%C3%A9l%C3%A8bre-sample-pdf.acsm?id&#x3D;ayFMEAAAQBAJ&amp;format&#x3D;pdf&amp;output&#x3D;acs4_fulfillment_token&amp;dl_type&#x3D;sample&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;webReaderLink&quot;: &quot;http://play.google.com/books/reader?id&#x3D;ayFMEAAAQBAJ&amp;hl&#x3D;&amp;printsec&#x3D;frontcover&amp;source&#x3D;gbs_api&quot;,
+                &quot;accessViewStatus&quot;: &quot;SAMPLE&quot;,
+                &quot;quoteSharingAllowed&quot;: false
+              },
+              &quot;searchInfo&quot;: {
+                &quot;textSnippet&quot;: &quot;e   un Holmes tout à fait convaincant, qui aurait pu facilement s  imposer n e y e Q u dans l  e  rit du public comme « le » \u003cb\u003eSherlock Holmes\u003c/b\u003e des années 1960, s  il n  avait renoncé au personnage au terme de r la première saison,&amp;nbsp;...&quot;
+              }
+            },
+            {
+              &quot;kind&quot;: &quot;books#volume&quot;,
+              &quot;id&quot;: &quot;I-beDwAAQBAJ&quot;,
+              &quot;etag&quot;: &quot;gGazpvFi8ko&quot;,
+              &quot;selfLink&quot;: &quot;https://www.googleapis.com/books/v1/volumes/I-beDwAAQBAJ&quot;,
+              &quot;volumeInfo&quot;: {
+                &quot;title&quot;: &quot;Histoires secrètes de Sherlock Holmes&quot;,
+                &quot;authors&quot;: [
+                  &quot;René Reouven&quot;
+                ],
+                &quot;publisher&quot;: &quot;Denoël&quot;,
+                &quot;publishedDate&quot;: &quot;2012-06-05T00:00:00+02:00&quot;,
+                &quot;description&quot;: &quot;En rapportant au public les enquêtes de Sherlock Holmes, le Dr Watson a évoqué une soixantaine d&#x27;affaires dont il n&#x27;a jamais relaté le détail. Un silence d&#x27;autant plus surprenant que ces «untold stories» semblent avoir été parmi les plus insolites et les plus difficiles que le célèbre détective ait été amené à résoudre.Ce sont ces ellipses, ainsi que certains mystères qui parsèment la carrière de Holmes que René Reouven a entrepris d&#x27;explorer. Une quinzaine d&#x27;aventures que Le Magazine littéraire a saluées en ces termes : «René Reouven a vraiment pris la voix de son maître. Et sa copie est tellement conforme qu&#x27;on se demande si, traduite en anglais, elle n&#x27;aurait pas la valeur d&#x27;une version originale.»&quot;,
+                &quot;industryIdentifiers&quot;: [
+                  {
+                    &quot;type&quot;: &quot;ISBN_13&quot;,
+                    &quot;identifier&quot;: &quot;9782207104149&quot;
+                  },
+                  {
+                    &quot;type&quot;: &quot;ISBN_10&quot;,
+                    &quot;identifier&quot;: &quot;2207104141&quot;
+                  }
+                ],
+                &quot;readingModes&quot;: {
+                  &quot;text&quot;: false,
+                  &quot;image&quot;: true
+                },
+                &quot;pageCount&quot;: 1010,
+                &quot;printType&quot;: &quot;BOOK&quot;,
+                &quot;categories&quot;: [
+                  &quot;Fiction&quot;
+                ],
+                &quot;maturityRating&quot;: &quot;NOT_MATURE&quot;,
+                &quot;allowAnonLogging&quot;: false,
+                &quot;contentVersion&quot;: &quot;0.0.1.0.preview.1&quot;,
+                &quot;panelizationSummary&quot;: {
+                  &quot;containsEpubBubbles&quot;: false,
+                  &quot;containsImageBubbles&quot;: false
+                },
+                &quot;imageLinks&quot;: {
+                  &quot;smallThumbnail&quot;: &quot;http://books.google.com/books/content?id&#x3D;I-beDwAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;5&amp;edge&#x3D;curl&amp;source&#x3D;gbs_api&quot;,
+                  &quot;thumbnail&quot;: &quot;http://books.google.com/books/content?id&#x3D;I-beDwAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;1&amp;edge&#x3D;curl&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;language&quot;: &quot;fr&quot;,
+                &quot;previewLink&quot;: &quot;http://books.google.fr/books?id&#x3D;I-beDwAAQBAJ&amp;pg&#x3D;PA998&amp;dq&#x3D;sherlock+homes&amp;hl&#x3D;&amp;cd&#x3D;8&amp;source&#x3D;gbs_api&quot;,
+                &quot;infoLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;I-beDwAAQBAJ&amp;source&#x3D;gbs_api&quot;,
+                &quot;canonicalVolumeLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;I-beDwAAQBAJ&quot;
+              },
+              &quot;saleInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;saleability&quot;: &quot;FOR_SALE&quot;,
+                &quot;isEbook&quot;: true,
+                &quot;listPrice&quot;: {
+                  &quot;amount&quot;: 11.99,
+                  &quot;currencyCode&quot;: &quot;EUR&quot;
+                },
+                &quot;retailPrice&quot;: {
+                  &quot;amount&quot;: 11.99,
+                  &quot;currencyCode&quot;: &quot;EUR&quot;
+                },
+                &quot;buyLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;I-beDwAAQBAJ&amp;rdid&#x3D;book-I-beDwAAQBAJ&amp;rdot&#x3D;1&amp;source&#x3D;gbs_api&quot;,
+                &quot;offers&quot;: [
+                  {
+                    &quot;finskyOfferType&quot;: 1,
+                    &quot;listPrice&quot;: {
+                      &quot;amountInMicros&quot;: 11990000,
+                      &quot;currencyCode&quot;: &quot;EUR&quot;
+                    },
+                    &quot;retailPrice&quot;: {
+                      &quot;amountInMicros&quot;: 11990000,
+                      &quot;currencyCode&quot;: &quot;EUR&quot;
+                    },
+                    &quot;giftable&quot;: true
+                  }
+                ]
+              },
+              &quot;accessInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;viewability&quot;: &quot;PARTIAL&quot;,
+                &quot;embeddable&quot;: true,
+                &quot;publicDomain&quot;: false,
+                &quot;textToSpeechPermission&quot;: &quot;ALLOWED&quot;,
+                &quot;epub&quot;: {
+                  &quot;isAvailable&quot;: false
+                },
+                &quot;pdf&quot;: {
+                  &quot;isAvailable&quot;: true,
+                  &quot;acsTokenLink&quot;: &quot;http://books.google.fr/books/download/Histoires_secr%C3%A8tes_de_Sherlock_Holmes-sample-pdf.acsm?id&#x3D;I-beDwAAQBAJ&amp;format&#x3D;pdf&amp;output&#x3D;acs4_fulfillment_token&amp;dl_type&#x3D;sample&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;webReaderLink&quot;: &quot;http://play.google.com/books/reader?id&#x3D;I-beDwAAQBAJ&amp;hl&#x3D;&amp;printsec&#x3D;frontcover&amp;source&#x3D;gbs_api&quot;,
+                &quot;accessViewStatus&quot;: &quot;SAMPLE&quot;,
+                &quot;quoteSharingAllowed&quot;: false
+              },
+              &quot;searchInfo&quot;: {
+                &quot;textSnippet&quot;: &quot;éditions V.D.B. (en gros caractères pour mal-voyants), 1991 Hors collection Tobie or not Tobie, 1980 Récits de la troisième brigade, 1990 CYCLE \u003cb\u003eSHERLOCK HOLMES\u003c/b\u003e Collection Sueurs froides Sous le pseudonyme d&amp;#39;Albert Davidson : Elémentaire&amp;nbsp;...&quot;
+              }
+            },
+            {
+              &quot;kind&quot;: &quot;books#volume&quot;,
+              &quot;id&quot;: &quot;fDTyDwAAQBAJ&quot;,
+              &quot;etag&quot;: &quot;uwhNFg857QI&quot;,
+              &quot;selfLink&quot;: &quot;https://www.googleapis.com/books/v1/volumes/fDTyDwAAQBAJ&quot;,
+              &quot;volumeInfo&quot;: {
+                &quot;title&quot;: &quot;L&#x27;intégrale de Sherlock Holmes&quot;,
+                &quot;authors&quot;: [
+                  &quot;Arthur Conan Doyle&quot;
+                ],
+                &quot;publisher&quot;: &quot;BoD - Books on Demand&quot;,
+                &quot;publishedDate&quot;: &quot;2020-07-20&quot;,
+                &quot;description&quot;: &quot;Retrouver dans cette intégrale toutes les aventures du célèbre détective Sherlock Holmes et de son fidèle associé Watson. Inclus dans cette édition intégrale: Les 4 grands romans de Sherlock Holmes: Un crime étrange (ou l&#x27;étude en rouge selon la traduction) La marque des quatre Le chien des Baskerville La vallée de la peur Et les principaux recueils de nouvelles mettant en scène Sherlock Holmes: Les aventures de Sherlock Holmes Nouvelles aventures de Sherlock Holmes Sherlock Holmes triomphe La résurrection de Sherlock Holmes Souvenirs de Sherlock Holmes Les archives de Sherlock Holmes&quot;,
+                &quot;industryIdentifiers&quot;: [
+                  {
+                    &quot;type&quot;: &quot;ISBN_13&quot;,
+                    &quot;identifier&quot;: &quot;9782322211920&quot;
+                  },
+                  {
+                    &quot;type&quot;: &quot;ISBN_10&quot;,
+                    &quot;identifier&quot;: &quot;2322211923&quot;
+                  }
+                ],
+                &quot;readingModes&quot;: {
+                  &quot;text&quot;: true,
+                  &quot;image&quot;: true
+                },
+                &quot;pageCount&quot;: 2107,
+                &quot;printType&quot;: &quot;BOOK&quot;,
+                &quot;categories&quot;: [
+                  &quot;Fiction&quot;
+                ],
+                &quot;maturityRating&quot;: &quot;NOT_MATURE&quot;,
+                &quot;allowAnonLogging&quot;: false,
+                &quot;contentVersion&quot;: &quot;1.1.1.0.preview.3&quot;,
+                &quot;panelizationSummary&quot;: {
+                  &quot;containsEpubBubbles&quot;: false,
+                  &quot;containsImageBubbles&quot;: false
+                },
+                &quot;imageLinks&quot;: {
+                  &quot;smallThumbnail&quot;: &quot;http://books.google.com/books/content?id&#x3D;fDTyDwAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;5&amp;edge&#x3D;curl&amp;source&#x3D;gbs_api&quot;,
+                  &quot;thumbnail&quot;: &quot;http://books.google.com/books/content?id&#x3D;fDTyDwAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;1&amp;edge&#x3D;curl&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;language&quot;: &quot;fr&quot;,
+                &quot;previewLink&quot;: &quot;http://books.google.fr/books?id&#x3D;fDTyDwAAQBAJ&amp;pg&#x3D;PT353&amp;dq&#x3D;sherlock+homes&amp;hl&#x3D;&amp;cd&#x3D;9&amp;source&#x3D;gbs_api&quot;,
+                &quot;infoLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;fDTyDwAAQBAJ&amp;source&#x3D;gbs_api&quot;,
+                &quot;canonicalVolumeLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;fDTyDwAAQBAJ&quot;
+              },
+              &quot;saleInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;saleability&quot;: &quot;FOR_SALE&quot;,
+                &quot;isEbook&quot;: true,
+                &quot;listPrice&quot;: {
+                  &quot;amount&quot;: 14.99,
+                  &quot;currencyCode&quot;: &quot;EUR&quot;
+                },
+                &quot;retailPrice&quot;: {
+                  &quot;amount&quot;: 14.99,
+                  &quot;currencyCode&quot;: &quot;EUR&quot;
+                },
+                &quot;buyLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;fDTyDwAAQBAJ&amp;rdid&#x3D;book-fDTyDwAAQBAJ&amp;rdot&#x3D;1&amp;source&#x3D;gbs_api&quot;,
+                &quot;offers&quot;: [
+                  {
+                    &quot;finskyOfferType&quot;: 1,
+                    &quot;listPrice&quot;: {
+                      &quot;amountInMicros&quot;: 14990000,
+                      &quot;currencyCode&quot;: &quot;EUR&quot;
+                    },
+                    &quot;retailPrice&quot;: {
+                      &quot;amountInMicros&quot;: 14990000,
+                      &quot;currencyCode&quot;: &quot;EUR&quot;
+                    },
+                    &quot;giftable&quot;: true
+                  }
+                ]
+              },
+              &quot;accessInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;viewability&quot;: &quot;PARTIAL&quot;,
+                &quot;embeddable&quot;: true,
+                &quot;publicDomain&quot;: false,
+                &quot;textToSpeechPermission&quot;: &quot;ALLOWED&quot;,
+                &quot;epub&quot;: {
+                  &quot;isAvailable&quot;: true,
+                  &quot;acsTokenLink&quot;: &quot;http://books.google.fr/books/download/L_int%C3%A9grale_de_Sherlock_Holmes-sample-epub.acsm?id&#x3D;fDTyDwAAQBAJ&amp;format&#x3D;epub&amp;output&#x3D;acs4_fulfillment_token&amp;dl_type&#x3D;sample&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;pdf&quot;: {
+                  &quot;isAvailable&quot;: true,
+                  &quot;acsTokenLink&quot;: &quot;http://books.google.fr/books/download/L_int%C3%A9grale_de_Sherlock_Holmes-sample-pdf.acsm?id&#x3D;fDTyDwAAQBAJ&amp;format&#x3D;pdf&amp;output&#x3D;acs4_fulfillment_token&amp;dl_type&#x3D;sample&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;webReaderLink&quot;: &quot;http://play.google.com/books/reader?id&#x3D;fDTyDwAAQBAJ&amp;hl&#x3D;&amp;printsec&#x3D;frontcover&amp;source&#x3D;gbs_api&quot;,
+                &quot;accessViewStatus&quot;: &quot;SAMPLE&quot;,
+                &quot;quoteSharingAllowed&quot;: false
+              },
+              &quot;searchInfo&quot;: {
+                &quot;textSnippet&quot;: &quot;De sa main, \u003cb\u003eSherlock Homes\u003c/b\u003e frappa son genou dans un geste d&amp;#39;impatience. « Encore si j&amp;#39;avais été là ! s&amp;#39;écria-t-il. Le cas m&amp;#39;apparaît d&amp;#39;un intérêt palpitant. Cette page de gravier sur laquelle j&amp;#39;aurais pu lire tant de choses,&amp;nbsp;...&quot;
+              }
+            },
+            {
+              &quot;kind&quot;: &quot;books#volume&quot;,
+              &quot;id&quot;: &quot;jJGOR6L6OoQC&quot;,
+              &quot;etag&quot;: &quot;HsajydE5V34&quot;,
+              &quot;selfLink&quot;: &quot;https://www.googleapis.com/books/v1/volumes/jJGOR6L6OoQC&quot;,
+              &quot;volumeInfo&quot;: {
+                &quot;title&quot;: &quot;Sherlock Holmes et le signe de la fiction&quot;,
+                &quot;authors&quot;: [
+                  &quot;Denis Mellier&quot;
+                ],
+                &quot;publisher&quot;: &quot;ENS Editions&quot;,
+                &quot;publishedDate&quot;: &quot;1999&quot;,
+                &quot;industryIdentifiers&quot;: [
+                  {
+                    &quot;type&quot;: &quot;ISBN_10&quot;,
+                    &quot;identifier&quot;: &quot;290212659X&quot;
+                  },
+                  {
+                    &quot;type&quot;: &quot;ISBN_13&quot;,
+                    &quot;identifier&quot;: &quot;9782902126590&quot;
+                  }
+                ],
+                &quot;readingModes&quot;: {
+                  &quot;text&quot;: false,
+                  &quot;image&quot;: true
+                },
+                &quot;pageCount&quot;: 199,
+                &quot;printType&quot;: &quot;BOOK&quot;,
+                &quot;categories&quot;: [
+                  &quot;Detective and mystery stories, English&quot;
+                ],
+                &quot;maturityRating&quot;: &quot;NOT_MATURE&quot;,
+                &quot;allowAnonLogging&quot;: false,
+                &quot;contentVersion&quot;: &quot;0.2.2.0.preview.1&quot;,
+                &quot;panelizationSummary&quot;: {
+                  &quot;containsEpubBubbles&quot;: false,
+                  &quot;containsImageBubbles&quot;: false
+                },
+                &quot;imageLinks&quot;: {
+                  &quot;smallThumbnail&quot;: &quot;http://books.google.com/books/content?id&#x3D;jJGOR6L6OoQC&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;5&amp;edge&#x3D;curl&amp;source&#x3D;gbs_api&quot;,
+                  &quot;thumbnail&quot;: &quot;http://books.google.com/books/content?id&#x3D;jJGOR6L6OoQC&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;1&amp;edge&#x3D;curl&amp;source&#x3D;gbs_api&quot;
+                },
+                &quot;language&quot;: &quot;fr&quot;,
+                &quot;previewLink&quot;: &quot;http://books.google.fr/books?id&#x3D;jJGOR6L6OoQC&amp;pg&#x3D;PA121&amp;dq&#x3D;sherlock+homes&amp;hl&#x3D;&amp;cd&#x3D;10&amp;source&#x3D;gbs_api&quot;,
+                &quot;infoLink&quot;: &quot;http://books.google.fr/books?id&#x3D;jJGOR6L6OoQC&amp;dq&#x3D;sherlock+homes&amp;hl&#x3D;&amp;source&#x3D;gbs_api&quot;,
+                &quot;canonicalVolumeLink&quot;: &quot;https://books.google.com/books/about/Sherlock_Holmes_et_le_signe_de_la_fictio.html?hl&#x3D;&amp;id&#x3D;jJGOR6L6OoQC&quot;
+              },
+              &quot;saleInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;saleability&quot;: &quot;NOT_FOR_SALE&quot;,
+                &quot;isEbook&quot;: false
+              },
+              &quot;accessInfo&quot;: {
+                &quot;country&quot;: &quot;FR&quot;,
+                &quot;viewability&quot;: &quot;PARTIAL&quot;,
+                &quot;embeddable&quot;: true,
+                &quot;publicDomain&quot;: false,
+                &quot;textToSpeechPermission&quot;: &quot;ALLOWED&quot;,
+                &quot;epub&quot;: {
+                  &quot;isAvailable&quot;: false
+                },
+                &quot;pdf&quot;: {
+                  &quot;isAvailable&quot;: false
+                },
+                &quot;webReaderLink&quot;: &quot;http://play.google.com/books/reader?id&#x3D;jJGOR6L6OoQC&amp;hl&#x3D;&amp;printsec&#x3D;frontcover&amp;source&#x3D;gbs_api&quot;,
+                &quot;accessViewStatus&quot;: &quot;SAMPLE&quot;,
+                &quot;quoteSharingAllowed&quot;: false
+              },
+              &quot;searchInfo&quot;: {
+                &quot;textSnippet&quot;: &quot;Holmes , plus réservé , s&amp;#39;en est tenu à Jack the Ripper ( dans deux films : A Study in Terror et Murder by Decree ) et ... la version initiale de The Private Life of \u003cb\u003eSherlock Homes\u003c/b\u003e , amputée de près de deux heures par les producteurs .&quot;
+              }
+            }
+          ]
+        }
+        </code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-ad23ee7a-235b-470c-8e53-7300e3498005">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <div class="table-responsive text-nowrap">
+                                        <table id="myTable-ad23ee7a-235b-470c-8e53-7300e3498005" class="table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th></tr></thead>
+                                            <tbody>
+                                                <tr >
+                                                    <td >ValidationSuccessfulResponse200</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >check title SHERLOCK HOMES 03</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >check category</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >check total d&#x27;ouvrages &#x3D; 10</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >erreur provoquée si plus de 10 results</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center bg-danger">1</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >kind correspond à books#volumes</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    <td class="text-center">5</td>
+                                                    <td class="text-center">1</td>
+                                                    <td class="text-center">0</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="row ">
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="card-deck">
+                                        <div class="card border-danger" style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-uppercase text-white text-center bg-danger">Test Failure</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                    <thead><tr class="text-nowrap"><th>Test Name</th><th>Assertion Error</th></tr></thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="w-45 text-nowrap ">erreur provoquée si plus de 10 results</td>
+                                                                <td class="w-55"><pre><code >expected 10 to be above 10</code></pre></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div id="folder-a4a9c822-2e7c-4f7d-bf5b-c696f7731369" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-danger iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-a4a9c822-2e7c-4f7d-bf5b-c696f7731369" aria-expanded="false" aria-controls="collapse" id="requests-a4a9c822-2e7c-4f7d-bf5b-c696f7731369" class="collapsed text-white z-block">
+                    Iteration: 1 - GetBook <i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-a4a9c822-2e7c-4f7d-bf5b-c696f7731369" class="collapse" aria-labelledby="requests-a4a9c822-2e7c-4f7d-bf5b-c696f7731369">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Description</h5>
+                                        <div class="dyn-height">
+                                            <code class="renderMarkdown">1/ Given: réussite d’une requête
+        
+        When: la ressource a été récupérée et est transmise dans le corps du message  
+        Then: Le code de statut de réponse &quot;HTTP 200 OK&quot; indique la réussite d&#x27;une requête
+        
+        2/ Given: L&#x27;ID est lié à la valeur “_-jbDwAAQBAJ
+        
+        &quot; When: Une recherche sur “Sherlock Homes” est envoyée avec la valeur “_-jbDwAAQBAJ  
+        Then: Elle est affichée dans le body
+        
+        3/ Given: Le résultat pour la recherche de Sherlock Homes ne concernent que ce titre
+        
+        When: Une recherche sur “Sherlock Homes” est envoyée Then: Le seul résultat visible est l’ouvrage “SHERLOCK HOMES 01 A STUDY IN SCARLET”
+        
+        4/ Given: La requête permet d&#x27;afficher la catégorie
+        
+        When: Une recherche se lance  
+        Then: La catégorie est affichée
+        
+        5/ Given: ERREUR provoquée Vérification q&#x27;un seul ouvrage est disponible
+        
+        When: Une recherche s&#x27;exécute  
+        Then: Seul 1 résultat peut être disponible
+        
+        6/ Given: La data “Kind” est liée à la valeur “books#volumes&quot;
+        
+        When: Une recherche sur “Sherlock Homes” est envoyée ET que la data “Kind” du résultat est visible dans le body  
+        Then: Elle est liée à la valeur “books#volumes&quot;</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> GET</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="https://www.googleapis.com/books/v1/volumes/_-jbDwAAQBAJ" target="_blank">https://www.googleapis.com/books/v1/volumes/_-jbDwAAQBAJ</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 200 - OK</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 132ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 5.26KB</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar  bg-danger" style="width: 100%" role="progressbar">
+                                            <h5 style="padding-top:5px;"><strong>83 %</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td>PostmanRuntime/7.29.0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td>*/*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td>no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td>79339912-c1a5-4f23-9a6b-c3a34ebcd26e</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td>www.googleapis.com</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Encoding</td>
+                                                        <td>gzip, deflate, br</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td>keep-alive</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Type</td>
+                                                    <td>application/json; charset&#x3D;UTF-8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Vary</td>
+                                                    <td>Origin</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Vary</td>
+                                                    <td>X-Origin</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Vary</td>
+                                                    <td>Referer</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Encoding</td>
+                                                    <td>gzip</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Date</td>
+                                                    <td>Sun, 23 Jan 2022 11:52:50 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Server</td>
+                                                    <td>ESF</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Cache-Control</td>
+                                                    <td>private</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-XSS-Protection</td>
+                                                    <td>0</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Frame-Options</td>
+                                                    <td>SAMEORIGIN</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Content-Type-Options</td>
+                                                    <td>nosniff</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Alt-Svc</td>
+                                                    <td>h3&#x3D;&quot;:443&quot;; ma&#x3D;2592000,h3-29&#x3D;&quot;:443&quot;; ma&#x3D;2592000,h3-Q050&#x3D;&quot;:443&quot;; ma&#x3D;2592000,h3-Q046&#x3D;&quot;:443&quot;; ma&#x3D;2592000,h3-Q043&#x3D;&quot;:443&quot;; ma&#x3D;2592000,quic&#x3D;&quot;:443&quot;; ma&#x3D;2592000; v&#x3D;&quot;46,43&quot;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Transfer-Encoding</td>
+                                                    <td>chunked</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-23f49362-4cd7-4f25-b168-68a67c3371a5" class="prettyPrint">{
+          &quot;kind&quot;: &quot;books#volume&quot;,
+          &quot;id&quot;: &quot;_-jbDwAAQBAJ&quot;,
+          &quot;etag&quot;: &quot;hoGsK+dV/9A&quot;,
+          &quot;selfLink&quot;: &quot;https://www.googleapis.com/books/v1/volumes/_-jbDwAAQBAJ&quot;,
+          &quot;volumeInfo&quot;: {
+            &quot;title&quot;: &quot;SHERLOCK HOMES 01 A STUDY IN SCARLET 셜록 홈즈 01 진홍빛 연구_영문판&quot;,
+            &quot;authors&quot;: [
+              &quot;아서 코난 도일 Sir Arthur Conan Doyle&quot;
+            ],
+            &quot;publisher&quot;: &quot;스토리터치&quot;,
+            &quot;description&quot;: &quot;\u003cp\u003e*이 도서는 영어 원문으로 된 도서입니다.\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e영국의 소설가 아서 코난 도일이 쓴 추리소설 《셜록 홈즈 전집》. \u003c/p\u003e\u003cp\u003e탐정의 대명사라 불리는 주인공 셜록 홈즈는 등장과 동시에 독자들을 매료시킨 인물이다. 날카로운 추리력과 카리스마를 갖춘 명탐정 셜록 홈즈와 그의 동료 왓슨 박사는 아주 작은 실마리조차 놓치지 않고 사건을 해결해 나간다. 독자들을 압도하는 그의 활약상을 영어 원서를 통해 만나 보시기 바란다.\u003c/p\u003e&quot;,
+            &quot;industryIdentifiers&quot;: [
+              {
+                &quot;type&quot;: &quot;ISBN_13&quot;,
+                &quot;identifier&quot;: &quot;9791186515471&quot;
+              }
+            ],
+            &quot;readingModes&quot;: {
+              &quot;text&quot;: true,
+              &quot;image&quot;: true
+            },
+            &quot;pageCount&quot;: 224,
+            &quot;printedPageCount&quot;: 224,
+            &quot;printType&quot;: &quot;BOOK&quot;,
+            &quot;categories&quot;: [
+              &quot;Fiction / General&quot;,
+              &quot;Literary Collections / American / General&quot;
+            ],
+            &quot;maturityRating&quot;: &quot;NOT_MATURE&quot;,
+            &quot;allowAnonLogging&quot;: false,
+            &quot;contentVersion&quot;: &quot;1.1.1.0.preview.3&quot;,
+            &quot;panelizationSummary&quot;: {
+              &quot;containsEpubBubbles&quot;: false,
+              &quot;containsImageBubbles&quot;: false
+            },
+            &quot;imageLinks&quot;: {
+              &quot;smallThumbnail&quot;: &quot;http://books.google.com/books/publisher/content?id&#x3D;_-jbDwAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;5&amp;edge&#x3D;curl&amp;imgtk&#x3D;AFLRE71Q00lQjgR-gHFGWZJQQa40g1fzj1QVHvSqlfy2OaXydCrY1N9sLifIosuU49sHnwwo1QmLhNMWpRQT8Z4ZSWUw7YAQ36wrgBvs-GdCTh-uSDmGtUNwL5b7D3gLot2IjcdoapYC&amp;source&#x3D;gbs_api&quot;,
+              &quot;thumbnail&quot;: &quot;http://books.google.com/books/publisher/content?id&#x3D;_-jbDwAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;1&amp;edge&#x3D;curl&amp;imgtk&#x3D;AFLRE70kvRgJXY4gQkO7A3djNOc6h-8zXcLSHuKyPwCQJr5Fq4cj9FiOHuxV-iTfXz8tl6UZQNb362ViEirV5b-6aEJ5hIfpyrdHe-w9_x1OT6Cjz_UVSeZ-AGhQ9sJzRHq3EJi0-IUT&amp;source&#x3D;gbs_api&quot;,
+              &quot;small&quot;: &quot;http://books.google.com/books/publisher/content?id&#x3D;_-jbDwAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;2&amp;edge&#x3D;curl&amp;imgtk&#x3D;AFLRE718jQ5FNbebHpq-rosABojtXu4brtB7yypIsemyoapVgdVGFQpn1ntk77z67NMy43XUSJ8dAXcjQkuLJlg-aV4_KFQjKezBaWivccYNm4GfLTPZAF5PI8wYNVKtRkC1vr2OjxJ1&amp;source&#x3D;gbs_api&quot;,
+              &quot;medium&quot;: &quot;http://books.google.com/books/publisher/content?id&#x3D;_-jbDwAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;3&amp;edge&#x3D;curl&amp;imgtk&#x3D;AFLRE735G8hjgUpT1HeXcx46f1XcKh-QY8UDjgFx58jMcfilrpMLxgzhrjJu4RQ2SDVryEISYrqOS8piW_sK498cGG_gLvXdTkBDCNYBP_V-CQ24GCWo0COUzLqdxPzXRoN2RyKBLCyA&amp;source&#x3D;gbs_api&quot;,
+              &quot;large&quot;: &quot;http://books.google.com/books/publisher/content?id&#x3D;_-jbDwAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;4&amp;edge&#x3D;curl&amp;imgtk&#x3D;AFLRE70bJ6XXK34L6__fdI7Kl_f3l4TUpKznPApdckbei2uThYXtstG9EgLUyNeoqlgtv7Mr0zLcWJeRYVJZX2N8NL2j-rND7dveV5XhHozu-y6IRWEQewW6hhfZHTDDM0vNjBfSyP2E&amp;source&#x3D;gbs_api&quot;,
+              &quot;extraLarge&quot;: &quot;http://books.google.com/books/publisher/content?id&#x3D;_-jbDwAAQBAJ&amp;printsec&#x3D;frontcover&amp;img&#x3D;1&amp;zoom&#x3D;6&amp;edge&#x3D;curl&amp;imgtk&#x3D;AFLRE72U_ZoJVLSOAkX5NdiBKShKXwNSe_nthVLL9cPMuvh2nbnXiDWVUt_1XXjvpHvmPMe7HNNc8FGr1s4KzhHlotjHMLxPZuxxENzeo6KgH6-6PBFxX9rPWq0WXmuiIiUV7a2uxV-8&amp;source&#x3D;gbs_api&quot;
+            },
+            &quot;language&quot;: &quot;ko&quot;,
+            &quot;previewLink&quot;: &quot;http://books.google.fr/books?id&#x3D;_-jbDwAAQBAJ&amp;hl&#x3D;&amp;source&#x3D;gbs_api&quot;,
+            &quot;infoLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;_-jbDwAAQBAJ&amp;source&#x3D;gbs_api&quot;,
+            &quot;canonicalVolumeLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;_-jbDwAAQBAJ&quot;
+          },
+          &quot;layerInfo&quot;: {
+            &quot;layers&quot;: [
+              {
+                &quot;layerId&quot;: &quot;geo&quot;,
+                &quot;volumeAnnotationsVersion&quot;: &quot;2&quot;
+              }
+            ]
+          },
+          &quot;saleInfo&quot;: {
+            &quot;country&quot;: &quot;FR&quot;,
+            &quot;saleability&quot;: &quot;FOR_SALE&quot;,
+            &quot;isEbook&quot;: true,
+            &quot;listPrice&quot;: {
+              &quot;amount&quot;: 4.53,
+              &quot;currencyCode&quot;: &quot;EUR&quot;
+            },
+            &quot;retailPrice&quot;: {
+              &quot;amount&quot;: 4.3,
+              &quot;currencyCode&quot;: &quot;EUR&quot;
+            },
+            &quot;buyLink&quot;: &quot;https://play.google.com/store/books/details?id&#x3D;_-jbDwAAQBAJ&amp;rdid&#x3D;book-_-jbDwAAQBAJ&amp;rdot&#x3D;1&amp;source&#x3D;gbs_api&quot;,
+            &quot;offers&quot;: [
+              {
+                &quot;finskyOfferType&quot;: 1,
+                &quot;listPrice&quot;: {
+                  &quot;amountInMicros&quot;: 4530000,
+                  &quot;currencyCode&quot;: &quot;EUR&quot;
+                },
+                &quot;retailPrice&quot;: {
+                  &quot;amountInMicros&quot;: 4300000,
+                  &quot;currencyCode&quot;: &quot;EUR&quot;
+                },
+                &quot;giftable&quot;: true
+              }
+            ]
+          },
+          &quot;accessInfo&quot;: {
+            &quot;country&quot;: &quot;FR&quot;,
+            &quot;viewability&quot;: &quot;PARTIAL&quot;,
+            &quot;embeddable&quot;: true,
+            &quot;publicDomain&quot;: false,
+            &quot;textToSpeechPermission&quot;: &quot;ALLOWED&quot;,
+            &quot;epub&quot;: {
+              &quot;isAvailable&quot;: true,
+              &quot;acsTokenLink&quot;: &quot;http://books.google.fr/books/download/SHERLOCK_HOMES_01_A_STUDY_IN_SCARLET_%EC%85%9C-sample-epub.acsm?id&#x3D;_-jbDwAAQBAJ&amp;format&#x3D;epub&amp;output&#x3D;acs4_fulfillment_token&amp;dl_type&#x3D;sample&amp;source&#x3D;gbs_api&quot;
+            },
+            &quot;pdf&quot;: {
+              &quot;isAvailable&quot;: true,
+              &quot;acsTokenLink&quot;: &quot;http://books.google.fr/books/download/SHERLOCK_HOMES_01_A_STUDY_IN_SCARLET_%EC%85%9C-sample-pdf.acsm?id&#x3D;_-jbDwAAQBAJ&amp;format&#x3D;pdf&amp;output&#x3D;acs4_fulfillment_token&amp;dl_type&#x3D;sample&amp;source&#x3D;gbs_api&quot;
+            },
+            &quot;webReaderLink&quot;: &quot;http://play.google.com/books/reader?id&#x3D;_-jbDwAAQBAJ&amp;hl&#x3D;&amp;printsec&#x3D;frontcover&amp;source&#x3D;gbs_api&quot;,
+            &quot;accessViewStatus&quot;: &quot;SAMPLE&quot;,
+            &quot;quoteSharingAllowed&quot;: false
+          }
+        }
+        </code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-23f49362-4cd7-4f25-b168-68a67c3371a5">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <div class="table-responsive text-nowrap">
+                                        <table id="myTable-23f49362-4cd7-4f25-b168-68a67c3371a5" class="table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th></tr></thead>
+                                            <tbody>
+                                                <tr >
+                                                    <td >ValidationSuccessfulResponse200</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >check id _-jbDwAAQBAJ</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >check title SHERLOCK HOMES 01 A STUDY IN SCARLET</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >check category</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >erreur provoquée si &gt;1 result</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center bg-danger">1</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >kind correspond à books#volumes</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    <td class="text-center">5</td>
+                                                    <td class="text-center">1</td>
+                                                    <td class="text-center">0</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="row ">
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="card-deck">
+                                        <div class="card border-danger" style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-uppercase text-white text-center bg-danger">Test Failure</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                    <thead><tr class="text-nowrap"><th>Test Name</th><th>Assertion Error</th></tr></thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="w-45 text-nowrap ">erreur provoquée si &gt;1 result</td>
+                                                                <td class="w-55"><pre><code >Cannot read properties of undefined (reading &#x27;length&#x27;)</code></pre></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</body>
+</html>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Data Table Configuration -->
+
+<script>
+$(document).ready( function () {
+    $('#myTable-ad23ee7a-235b-470c-8e53-7300e3498005').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false,
+        "fixedColumns":   {
+            "heightMatch": 'none'
+        }
+    });
+});
+$(document).ready( function () {
+    $('#myTable-23f49362-4cd7-4f25-b168-68a67c3371a5').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false,
+        "fixedColumns":   {
+            "heightMatch": 'none'
+        }
+    });
+});
+</script>
+
+<!-- Tooltip Configuration -->
+
+<script>
+$(document).ready(function() {
+    $('[data-toggle="tooltip"]').tooltip({
+        trigger : 'hover'
+    })
+})
+</script>
+
+<!-- Show/Hide The Folders -->
+
+<script>
+$('#openAll').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#folder-b27e7c51-e4c8-40fc-afad-dfca01868a3c-iteration-0').removeClass('collapsed')
+            $('#folder-collapse-b27e7c51-e4c8-40fc-afad-dfca01868a3c-iteration-0').addClass('show')
+        $('#openAll').html("Collapse Folders");
+        break;
+    case 2:
+            $('#folder-b27e7c51-e4c8-40fc-afad-dfca01868a3c-iteration-0').addClass('collapsed')
+            $('#folder-collapse-b27e7c51-e4c8-40fc-afad-dfca01868a3c-iteration-0').removeClass('show')
+        $('#openAll').html("Expand Folders");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Requests -->
+
+<script>
+$('#openAllRequests').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#requests-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3').removeClass('collapsed')
+            $('#collapse-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3').removeClass('collapsed')
+            $('#requests-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3').addClass('show')
+            $('#collapse-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3').addClass('show')
+            $('#requests-a4a9c822-2e7c-4f7d-bf5b-c696f7731369').removeClass('collapsed')
+            $('#collapse-a4a9c822-2e7c-4f7d-bf5b-c696f7731369').removeClass('collapsed')
+            $('#requests-a4a9c822-2e7c-4f7d-bf5b-c696f7731369').addClass('show')
+            $('#collapse-a4a9c822-2e7c-4f7d-bf5b-c696f7731369').addClass('show')
+        $('#openAllRequests').html("Collapse Requests");
+        break;
+    case 2:
+            $('#requests-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3').addClass('collapsed')
+            $('#collapse-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3').addClass('collapsed')
+            $('#requests-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3').removeClass('show')
+            $('#collapse-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3').removeClass('show')
+            $('#requests-a4a9c822-2e7c-4f7d-bf5b-c696f7731369').addClass('collapsed')
+            $('#collapse-a4a9c822-2e7c-4f7d-bf5b-c696f7731369').addClass('collapsed')
+            $('#requests-a4a9c822-2e7c-4f7d-bf5b-c696f7731369').removeClass('show')
+            $('#collapse-a4a9c822-2e7c-4f7d-bf5b-c696f7731369').removeClass('show')
+        $('#openAllRequests').html("Expand Requests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Skipped Tests -->
+
+<script>
+$('#openAllSkipped').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#skipped-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3').removeClass('collapsed')
+            $('#skipped-collapse-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3').removeClass('collapsed')
+            $('#skipped-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3').addClass('show')
+            $('#skipped-collapse-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3').addClass('show')
+            $('#skipped-a4a9c822-2e7c-4f7d-bf5b-c696f7731369').removeClass('collapsed')
+            $('#skipped-collapse-a4a9c822-2e7c-4f7d-bf5b-c696f7731369').removeClass('collapsed')
+            $('#skipped-a4a9c822-2e7c-4f7d-bf5b-c696f7731369').addClass('show')
+            $('#skipped-collapse-a4a9c822-2e7c-4f7d-bf5b-c696f7731369').addClass('show')
+        $('#openAllSkipped').html("Collapse All Skipped Tests");
+        break;
+    case 2:
+            $('#skipped-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3').addClass('collapsed')
+            $('#skipped-collapse-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3').addClass('collapsed')
+            $('#skipped-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3').removeClass('show')
+            $('#skipped-collapse-ff8b6edf-c083-4f33-aa0c-49f5cc78a2e3').removeClass('show')
+            $('#skipped-a4a9c822-2e7c-4f7d-bf5b-c696f7731369').addClass('collapsed')
+            $('#skipped-collapse-a4a9c822-2e7c-4f7d-bf5b-c696f7731369').addClass('collapsed')
+            $('#skipped-a4a9c822-2e7c-4f7d-bf5b-c696f7731369').removeClass('show')
+            $('#skipped-collapse-a4a9c822-2e7c-4f7d-bf5b-c696f7731369').removeClass('show')
+        $('#openAllSkipped').html("Expand All Skipped Tests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Failures -->
+
+<script>
+$('#openAllFailed').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+let failedItemContent
+let failedItemHeading
+switch (clickCount){
+    case 1:
+            failedItemHeading = $('#fails-447d795e-b6bf-4168-8b47-f427c2bdbdd2');
+            failedItemContent = $("#fails-collapse-447d795e-b6bf-4168-8b47-f427c2bdbdd2");
+            failedItemHeading.removeClass('collapsed')
+            failedItemContent.removeClass('collapsed')
+            failedItemHeading.addClass('show')
+            failedItemContent.addClass('show')
+            failedItemHeading = $('#fails-6f7e4dee-674b-4d42-98bf-89fdde597029');
+            failedItemContent = $("#fails-collapse-6f7e4dee-674b-4d42-98bf-89fdde597029");
+            failedItemHeading.removeClass('collapsed')
+            failedItemContent.removeClass('collapsed')
+            failedItemHeading.addClass('show')
+            failedItemContent.addClass('show')
+        $('#openAllFailed').html("Collapse All Failed Tests");
+        break;
+    case 2:
+            failedItemHeading = $('#fails-447d795e-b6bf-4168-8b47-f427c2bdbdd2');
+            failedItemContent = $("#fails-collapse-447d795e-b6bf-4168-8b47-f427c2bdbdd2");
+            failedItemHeading.removeClass('show')
+            failedItemContent.removeClass('show')
+            failedItemHeading.addClass('collapsed')
+            failedItemContent.addClass('collapsed')
+            failedItemHeading = $('#fails-6f7e4dee-674b-4d42-98bf-89fdde597029');
+            failedItemContent = $("#fails-collapse-6f7e4dee-674b-4d42-98bf-89fdde597029");
+            failedItemHeading.removeClass('show')
+            failedItemContent.removeClass('show')
+            failedItemHeading.addClass('collapsed')
+            failedItemContent.addClass('collapsed')
+        $('#openAllFailed').html("Expand All Failed Tests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Pretty Print the Response Body-->
+
+<script>
+function isJSON(data)
+{
+    var ret = true;
+    try {
+            JSON.parse(data);
+    }catch(e) {
+            ret = false;
+    }
+    return ret;
+}
+
+function isXML(data)
+{
+    return (data.length > 0 && data[0] === '<');
+}
+
+// see https://gist.github.com/sente/1083506/d2834134cd070dbcc08bf42ee27dabb746a1c54d#gistcomment-2254622
+function formatXML(data) {
+    const PADDING = ' '.repeat(2); // set desired indent size here
+    const reg = /(>)(<)(\/*)/g;
+    let pad = 0;
+    xml = data.replace(reg, '$1\r\n$2$3');
+
+    return xml.split('\r\n').map((node, index) => {
+        let indent = 0;
+        if (node.match(/.+<\/\w[^>]*>$/)) {
+            indent = 0;
+        } else if (node.match(/^<\/\w/) && pad > 0) {
+            pad -= 1;
+        } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+            indent = 1;
+        } else {
+            indent = 0;
+        }
+
+        pad += indent;
+        return PADDING.repeat(pad - indent) + node;
+    }).join('\r\n');
+}
+
+$(".prettyPrint").each(function () {
+        var data = $(this).text();
+        // Verify whether data is JSON
+        if(isJSON(data))
+        {
+                obj = JSON.parse(data);
+                data = JSON.stringify(obj, null, 2);
+        }
+        else if(isXML(data)) {
+            data = formatXML(data);            
+        }
+        $(this).text(data);
+});
+</script>
+
+
+<!-- Copy Response Body To Clipboard -->
+
+<script>
+    var clipboard = new ClipboardJS('.copyButton');
+
+    clipboard.on('success', function(e) {
+        e.clearSelection();
+        $(".copyButton").addClass("bg-success text-white")
+        e.trigger.textContent = '✔ Copied!';
+        window.setTimeout(function() {
+            $(".copyButton").removeClass("bg-success text-white")
+            e.trigger.textContent = 'Copy to Clipboard';
+        }, 2000);
+    });
+    clipboard.on('error', function(e) {
+        e.clearSelection();
+        $(".copyButton").addClass("bg-danger text-white")
+        e.trigger.textContent = '✗ Not Copied';
+        window.setTimeout(function() {
+            $(".copyButton").removeClass("bg-danger text-white")
+            e.trigger.textContent = 'Copy to Clipboard';
+        }, 2000);
+    });
+
+</script>
+
+<!-- Render the Description Markdown and link in the test failures -->
+
+<script>
+    const remarkable = new Remarkable();
+
+    const descriptions = document.querySelectorAll(".renderMarkdown");
+    descriptions.forEach(description => {
+        description.innerHTML = renderHtmlFromMarkdown(description.textContent);
+    });
+    function renderHtmlFromMarkdown(markdown) {
+        return remarkable.render(trim(markdown));
+    }
+    function trim(string) {
+        return string ? string.replace(/^ +| +$/gm, "") : string;
+    }
+</script>
+
+<!-- Show/Hide The Toggles When Scrolling The Page -->
+
+<script>
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    document.getElementById("topOfRequestsScreen").style.display = "block";
+    document.getElementById("topOfFailuresScreen").style.display = "block";
+    document.getElementById("topOfSkippedScreen").style.display = "block";
+    document.getElementById("openAll").style.display = "none";
+    document.getElementById("openAllRequests").style.display = "none";
+    
+    
+    document.getElementById("showOnlyFailures").style.display = "none";
+    document.getElementById("openAllFailed").style.display = "none";
+  } else {
+    document.getElementById("topOfRequestsScreen").style.display = "none";
+    document.getElementById("topOfFailuresScreen").style.display = "none";
+    document.getElementById("topOfSkippedScreen").style.display = "none";
+    document.getElementById("openAll").style.display = "block";
+    document.getElementById("openAllRequests").style.display = "block";
+    
+    document.getElementById("showOnlyFailures").style.display = "block";
+    document.getElementById("openAllFailed").style.display = "block";
+  }
+}
+
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+</script>
+
+<!-- Creates The Iteration Tabs -->
+
+<script type="text/javascript">
+    "use strict";
+
+window.onload = function () {
+
+  // set display for all blocks of response
+  var allItems = document.querySelectorAll('[class*=iteration-]');
+  allItems.forEach(function(elem){
+    elem.style.display = 'block';
+  });
+
+   
+  let totalIterations = 1;
+   
+
+  let menu = document.querySelector('#execution-menu .nav');
+
+  for(var i = 0; i < totalIterations; i++)
+  {
+    let li = document.createElement('li');
+    li.appendChild(document.createTextNode((i + 1)));
+    li.setAttribute('id', 'iteration-' + i);
+    li.classList.add("custom-tab");
+    li.classList.add("itPassed");
+
+    li.addEventListener('click', function() {
+      //set display to none for all except row
+      let allItems = document.querySelectorAll('[class*=iteration-]:not(.row)');
+      allItems.forEach(function(elem) {
+        elem.style.display = 'none';
+      })
+
+      let allMenus = document.querySelectorAll('[id*=iteration-]');
+      allMenus.forEach(function(elem){
+        elem.style.borderBottom = 'none';
+      })
+    
+      this.style.borderBottom = 'solid 3px #032a33';
+
+      let items = document.querySelectorAll("." + this.id + ':not(.row)');
+      items.forEach(function(elem) {
+        elem.style.display = elem.style.display == 'block' ? 'none' : 'block';
+      })
+    });
+    menu.appendChild(li);
+  }
+
+  //shows first tab data
+  document.getElementById('iteration-0').click();
+  document.getElementById('iterationSelected').innerHTML = `Iteration ${document.getElementById('iteration-0').innerHTML} selected`
+
+    $("#iteration-0").removeClass('itPassed').addClass('itFailed')
+    $("#iteration-0").removeClass('itPassed').addClass('itFailed')
+}
+</script>
+
+<!-- Create the Selected Iteration Label -->
+
+<script>
+$(document).ready(function(){
+    $(function() {
+        $("#iterationList li").click(function() {
+            document.getElementById('iterationSelected').innerHTML = "Iteration " + this.innerHTML + " selected"
+        });
+    });
+});
+</script>
+
+<!-- Filter Action for the Iterations -->
+
+<script>
+$("#filterInput").on("input paste", function() {
+    var value = $(this).val();
+    $("#iterationList li").filter(function() {
+	    $("#showOnlyFailures").data("clickCount") ? $("#showOnlyFailures").click():null;
+        $(this).toggle($(this).text().indexOf(value) > -1)
+    });
+});
+</script>
+
+<!-- Showing the Failed Interations -->
+
+<script>
+$('#showOnlyFailures').on('click', function(e) {
+    let clickCount = $(this).data("clickCount") || 1
+	$("#filterInput").val()!="" && clickCount==1 ? $("#filterInput").val('').trigger('input'): null;
+    let selectedIteration = $('#iterationList li').filter(function () { 
+        return $(this).css('border-bottom').indexOf("solid") > -1 && $(this).hasClass('itFailed');
+    });
+    selectedIteration.length || clickCount > 1 ? null : $("#iterationList li.itFailed")[0].click()
+    $("#iterationList li.itPassed").toggle()
+    $("div.bg-success [id*=requests]").parents('[class^="row iteration-"]').toggle();
+    clickCount = clickCount > 1 ? 1 : ++clickCount;
+    clickCount > 1 ? $("#showOnlyFailures").html("Show All Iterations") : $("#showOnlyFailures").html("Show Failed Iterations");
+    $(this).data("clickCount", clickCount)     
+})
+</script>
+
+<!-- Set The Theme Of The Report -->
+
+<script>
+        function setTheme(themeName) {
+            localStorage.setItem('theme', themeName);
+            document.body.className = themeName;
+        }
+
+        function toggleTheme() {
+            if (localStorage.getItem('theme') === 'theme-light') {
+                setTheme('theme-dark');
+            } else {
+                setTheme('theme-light');
+            }
+        }
+
+        (function () {
+            if (localStorage.getItem('theme') === 'theme-light') {
+                setTheme('theme-light');
+                document.getElementById('slider').checked = false;
+            } else {
+                setTheme('theme-dark');
+                document.getElementById('slider').checked = true;
+            }
+        })();
+</script>
