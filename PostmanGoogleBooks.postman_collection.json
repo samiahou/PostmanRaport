@@ -1,0 +1,267 @@
+{
+	"info": {
+		"_postman_id": "1eef8422-035e-4125-a356-5585b53d4795",
+		"name": "PostmanGoogleBooks",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "books",
+			"item": [
+				{
+					"name": "ListBooks",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*transforme reponse en format json */\r",
+									"var response = pm.response.json()\r",
+									"   console.log(response)\r",
+									"\r",
+									" \r",
+									"/* 1/ 'test-script de la requete'*/\r",
+									"pm.test (\"ValidationSuccessfulResponse200\", function(){\r",
+									"    pm.response.to.have.status(200);    \r",
+									"})\r",
+									"\r",
+									"\r",
+									"/* 2/ pour recuperer title \"SHERLOCK HOMES 03 The Adventures of Sherlock Holmes\" > que la data est bien existante*/\r",
+									"pm.test(\"check title SHERLOCK HOMES 03\", function(){\r",
+									"    var title = response.items[0].volumeInfo.title;\r",
+									"    pm.expect(title).not.be.null;\r",
+									"    ///////////pm.expect(title).not.be.undefined;\r",
+									"})\r",
+									"//////////Le titre ne doit pas forcement être SHERLOCK HOMES 03 (check title) par exemple\r",
+									" \r",
+									"\r",
+									"/* 3/ pour recuperer category Fiction > que la data est bien existante*/\r",
+									"pm.test(\"check category\", function(){\r",
+									"    var categories = response.items[0].volumeInfo.categories;\r",
+									"    pm.expect(categories).not.be.null;\r",
+									"})\r",
+									"\r",
+									" \r",
+									"\r",
+									"/* 4/ total d'ouvrages = 10 (maxResults) */\r",
+									"pm.test(\"check total d'ouvrages = 10\", function(){\r",
+									"    pm.expect(response.items.length).equal(10)\r",
+									"})\r",
+									"\r",
+									"\r",
+									"/* 5/ Erreur provoquée car total d'ouvrages = 10 (maxResults)\r",
+									"pm.test(\"erreur provoquée si plus de 10 results\", function(){\r",
+									"    pm.expect(response.items.length).to.be.greaterThan(10)\r",
+									"}) */\r",
+									"\r",
+									"/* 5 bis/ Vérifier que le nombre de résultat ne dépasse jamais 10 re en utilisant un cpnst (10)*/\r",
+									"pm.test(\"Les résultats retournés ne doivent pas dépasser 10 resultats\", function(){\r",
+									"let rep5;\r",
+									"  if (response.items.length <= 10){\r",
+									"        rep5 = true;\r",
+									"  } else{\r",
+									"        rep5 = false;\r",
+									"    }\r",
+									"console.log(rep5);\r",
+									"pm.expect(rep5).to.be.true;\r",
+									"})\r",
+									"\r",
+									"/*\r",
+									"// 5 bis bis/ Vérifier que le nombre de résultat ne dépasse jamais 10  en utilisant un var maxResults\r",
+									"pm.test(\"Les résultats retournés ne doivent pas dépasser 10 resultats\", function(){\r",
+									"var maxResults = pm.environment.get('maxResults');\r",
+									"console.log(\"maxResults\");\r",
+									"let rep5;\r",
+									"  if (response.items.length <= maxResults){\r",
+									"        rep5 = true;\r",
+									"  } else{\r",
+									"        rep5 = false;\r",
+									"    }\r",
+									"pm.expect(rep5).to.be.true;\r",
+									"})\r",
+									"*/\r",
+									"\r",
+									"/* 6/ Check kind = books#volumes */\r",
+									"pm.test (\"kind correspond à books#volumes\", function(){\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.items[0].kind).to.include(\"books#volume\");\r",
+									"})\r",
+									"\r",
+									" \r",
+									"\r",
+									"//Pour tester la data books#volumes dans tout le tableau (=toute la longueur du tableau, on a besoin d'une boucle)://\r",
+									"/*var response = pm.response.json().items\r",
+									"pm.test (\"kind affiché\", function(){\r",
+									"    var response = pm.response.json().itemsfor(var i = 0; i < items.length -1 ; i++){\r",
+									"    var kind = items [i].kind\r",
+									"    pm.expect(items.kind).to.eq(\"books#volumes\")\r",
+									"}\r",
+									"})*/\r",
+									"\r",
+									"\r",
+									"/* Pour avoir une réponse alléatoire\r",
+									"pm.test(\"check alleatoire\", function(){\r",
+									"    var tableLength = response.items.volumeInfo.length\r",
+									"    var indexResults = Math.floor(Math.random() * tableLength);\r",
+									"    console.log('random number : '+ indexResults)\r",
+									"      pm.expect(response.items.length).equal(10)\r",
+									"    pm.expect(response.items[indexResults].volumeInfo.title).not.be.null;\r",
+									"      pm.expect(response.items[indexResults].volumeInfo.categories).not.be.null;\r",
+									"})\r",
+									"*/\r",
+									"\r",
+									" "
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"maxResults\", pm.request.url.variables.get(\"maxResults\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_google}}/books/v1/volumes?q=sherlock homes&maxResults=10",
+							"host": [
+								"{{api_google}}"
+							],
+							"path": [
+								"books",
+								"v1",
+								"volumes"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "sherlock homes"
+								},
+								{
+									"key": "maxResults",
+									"value": "10"
+								}
+							]
+						},
+						"description": "1/ Given: réussite d’une requête\n\nWhen: la ressource a été récupérée et est transmise dans le corps du message  \nThen: Le code de statut de réponse \"HTTP 200 OK\" indique la réussite d'une requête\n\n2/ Given: Les résultats pour la recherche de Sherlock Homes ne concernent que ce titre\n\nWhen: Une recherche sur “Sherlock Homes” est envoyée  \nThen: Le premier résultat visible est l’ouvrage “SHERLOCK HOMES 03 The Adventures of Sherlock Holmes”\n\n3/ Given: La requête permet d'afficher la catégorie\n\nWhen: Une recherche se lance  \nThen: La catégorie est affichée\n\n4/ Given: Le paramètre maxResults permet de sélectionner 10 ouvrages sur 652\n\nWhen: le paramètre “maxResults” est sélectionné  \nThen: Seuls 10 résultats sont présentés\n\n5 / Vérifier que le nombre de résultat ne dépasse jamais 10 re en utilisant un cpnst (10)\n\nWhen: On veut affiché plus de 10 résultats  \nThen: Impossible de voir > msg d'erreur\n\n6/ Given: La data “Kind” est lié à la valeur “books#volumes\"\n\nWhen: Une recherche sur “Sherlock Homes” est envoyée ET que la data “Kind” du premier résultat est visible dans le body  \nThen: Elle est liée à la valeur “books#volumes\""
+					},
+					"response": []
+				},
+				{
+					"name": "GetBook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*transforme reponse en format json */\r",
+									"\r",
+									"var response = pm.response.json()\r",
+									"\r",
+									"   console.log(response)\r",
+									"\r",
+									" \r",
+									"\r",
+									"/* 1/ test-script de la requete' */\r",
+									"\r",
+									"pm.test (\"ValidationSuccessfulResponse200\", function(){\r",
+									"\r",
+									"    pm.response.to.have.status(200)    \r",
+									"\r",
+									"})\r",
+									"\r",
+									" \r",
+									"\r",
+									"/* 2/ pour recuperer ID > que la data est bien / existante*/\r",
+									"\r",
+									"pm.test (\"check id _-jbDwAAQBAJ\", function(){\r",
+									"\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJson.id).to.include(\"_-jbDwAAQBAJ\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									" \r",
+									"\r",
+									"/* 3/ pour recuperer title \"SHERLOCK HOMES 01 A STUDY IN SCARLET > que la data est bien existante*/\r",
+									"\r",
+									"pm.test(\"check title SHERLOCK HOMES 01 A STUDY IN SCARLET\", function(){\r",
+									"\r",
+									"    var title = response.volumeInfo.title;\r",
+									"\r",
+									"    //var title = firstItem.volumeInfo.title;\r",
+									"\r",
+									"    pm.expect(title).not.be.null;\r",
+									"\r",
+									"})\r",
+									"\r",
+									" \r",
+									"\r",
+									"/* 4/ pour recuperer category Fiction > que la data est bien existante*/\r",
+									"\r",
+									"pm.test(\"check category\", function(){\r",
+									"\r",
+									"    var categories = response.volumeInfo.categories;\r",
+									"\r",
+									"    pm.expect(categories).not.be.null;\r",
+									"\r",
+									"})\r",
+									"\r",
+									" \r",
+									"\r",
+									"/* 5/ Erreur provoquée car total d'ouvrage = 1 */\r",
+									"\r",
+									"pm.test(\"erreur provoquée si >1 result\", function(){\r",
+									"\r",
+									"    pm.expect(response.items.length).to.be.greaterThan(1);\r",
+									"\r",
+									"})\r",
+									"\r",
+									" \r",
+									"\r",
+									"/* 6/ Check kind = books#volumes */\r",
+									"\r",
+									"pm.test (\"kind correspond à books#volumes\", function(){\r",
+									"\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJson.kind).to.include(\"books#volume\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									" "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_google}}/books/v1/volumes/_-jbDwAAQBAJ",
+							"host": [
+								"{{api_google}}"
+							],
+							"path": [
+								"books",
+								"v1",
+								"volumes",
+								"_-jbDwAAQBAJ"
+							]
+						},
+						"description": "1/ Given: réussite d’une requête\n\nWhen: la ressource a été récupérée et est transmise dans le corps du message  \nThen: Le code de statut de réponse \"HTTP 200 OK\" indique la réussite d'une requête\n\n2/ Given: L'ID est lié à la valeur “_-jbDwAAQBAJ\n\n\" When: Une recherche sur “Sherlock Homes” est envoyée avec la valeur “_-jbDwAAQBAJ  \nThen: Elle est affichée dans le body\n\n3/ Given: Le résultat pour la recherche de Sherlock Homes ne concernent que ce titre\n\nWhen: Une recherche sur “Sherlock Homes” est envoyée Then: Le seul résultat visible est l’ouvrage “SHERLOCK HOMES 01 A STUDY IN SCARLET”\n\n4/ Given: La requête permet d'afficher la catégorie\n\nWhen: Une recherche se lance  \nThen: La catégorie est affichée\n\n5/ Given: ERREUR provoquée Vérification q'un seul ouvrage est disponible\n\nWhen: Une recherche s'exécute  \nThen: Seul 1 résultat peut être disponible\n\n6/ Given: La data “Kind” est liée à la valeur “books#volumes\"\n\nWhen: Une recherche sur “Sherlock Homes” est envoyée ET que la data “Kind” du résultat est visible dans le body  \nThen: Elle est liée à la valeur “books#volumes\""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
